@@ -1,0 +1,16 @@
+{
+  "id": "com.taptap.ninja.renameit",
+  "name": "Rename it",
+  "version": "0.0.1",
+  "host": {
+    "app": "XD",
+    "minVersion": "10.0.10.24"
+  },
+  "uiEntryPoints": [
+    {
+      "type": "menu",
+      "label": "Rename Selected Layers",
+      "commandId": "menuCommand"
+    }
+  ]
+}
