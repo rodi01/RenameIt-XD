@@ -1,8 +1,8 @@
 /*
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
- * @Last Modified by:   Rodrigo Soares 
- * @Last Modified time: 2018-08-08 22:28:53 
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2018-08-11 22:53:11
  */
 
 const React = require("react")
@@ -74,9 +74,6 @@ class RenameLayers extends React.Component {
     if (event.keyCode === 13) {
       // Enter is pressed
       this.onSubmit()
-    } else if (event.keyCode === 27) {
-      // Escape is pressed
-      this.clear()
     }
   }
 
@@ -85,12 +82,10 @@ class RenameLayers extends React.Component {
       item.name = this.doRename(item, index)
     })
     this.props.dialog.close()
-    this.clear()
   }
 
   onCancelClick(e) {
     this.props.dialog.close()
-    this.clear()
   }
 
   onButtonClicked(event) {
@@ -104,15 +99,6 @@ class RenameLayers extends React.Component {
     )
   }
 
-  clear() {
-    this.setState(
-      {
-        valueAttr: "",
-        sequence: 1,
-      },
-      () => this.previewUpdate()
-    )
-  }
   render() {
     const buttons = [
       { id: "currentLayer", char: "%*", text: "Layer Name" },

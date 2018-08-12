@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-07 15:21:06 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-07 15:34:44
+ * @Last Modified time: 2018-08-11 22:36:22
  */
 
 import changeCase from "change-case"
@@ -47,8 +47,6 @@ export function rename(options) {
 
   // Interator
   const nInterators = newLayerName.match(/%N+/gi)
-  console.log(nInterators)
-
   const aInterators = newLayerName.match(/%A/gi)
 
   // Number Interator

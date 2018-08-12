@@ -21480,6 +21480,63 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./src/NoSelection.jsx":
+/*!*****************************!*\
+  !*** ./src/NoSelection.jsx ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * @Author: Rodrigo Soares 
+ * @Date: 2018-08-11 22:14:31 
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2018-08-11 23:00:24
+ */
+
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+class NoSelection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onOKClick = this.onOKClick.bind(this);
+  }
+
+  onOKClick(e) {
+    this.props.dialog.close();
+  }
+
+  render() {
+    return React.createElement(
+      "form",
+      { method: "dialog", style: { width: 250 } },
+      React.createElement(
+        "h1",
+        null,
+        "Uh Oh!"
+      ),
+      React.createElement(
+        "p",
+        null,
+        "You need to select at least one artboard or layer."
+      ),
+      React.createElement(
+        "footer",
+        null,
+        React.createElement(
+          "button",
+          { type: "submit", "uxp-variant": "primary", onClick: this.onOKClick },
+          "OK"
+        )
+      )
+    );
+  }
+}
+
+module.exports = NoSelection;
+
+/***/ }),
+
 /***/ "./src/Preview.jsx":
 /*!*************************!*\
   !*** ./src/Preview.jsx ***!
@@ -21553,8 +21610,8 @@ module.exports = Preview;
 /*
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
- * @Last Modified by:   Rodrigo Soares 
- * @Last Modified time: 2018-08-08 22:28:53 
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2018-08-11 22:53:11
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -21623,9 +21680,6 @@ class RenameLayers extends React.Component {
     if (event.keyCode === 13) {
       // Enter is pressed
       this.onSubmit();
-    } else if (event.keyCode === 27) {
-      // Escape is pressed
-      this.clear();
     }
   }
 
@@ -21634,12 +21688,10 @@ class RenameLayers extends React.Component {
       item.name = this.doRename(item, index);
     });
     this.props.dialog.close();
-    this.clear();
   }
 
   onCancelClick(e) {
     this.props.dialog.close();
-    this.clear();
   }
 
   onButtonClicked(event) {
@@ -21650,12 +21702,6 @@ class RenameLayers extends React.Component {
     }, () => this.previewUpdate());
   }
 
-  clear() {
-    this.setState({
-      valueAttr: "",
-      sequence: 1
-    }, () => this.previewUpdate());
-  }
   render() {
     const buttons = [{ id: "currentLayer", char: "%*", text: "Layer Name" }, { id: "layerWidth", char: "%w", text: "Layer Width" }, { id: "layerHeight", char: "%h", text: "Layer Height" }, { id: "sequenceAsc", char: "%n", text: "Num. Sequence ASC" }, { id: "sequenceDesc", char: "%N", text: "Num. Sequence DESC" }, { id: "sequenceAlpha", char: "%A", text: "Alphabet Sequence" }, { id: "parentName", char: "%o", text: "Parent Name" }];
 
@@ -21767,7 +21813,7 @@ __webpack_require__.r(__webpack_exports__);
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-07 15:21:06 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-07 15:34:44
+ * @Last Modified time: 2018-08-11 22:36:22
  */
 
 
@@ -21812,8 +21858,6 @@ function rename(options) {
 
   // Interator
   const nInterators = newLayerName.match(/%N+/gi);
-  console.log(nInterators);
-
   const aInterators = newLayerName.match(/%A/gi);
 
   // Number Interator
@@ -21889,7 +21933,14 @@ function rename(options) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {//  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
+/* WEBPACK VAR INJECTION */(function(global) {/*
+ * @Author: Rodrigo Soares 
+ * @Date: 2018-08-11 21:39:15 
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2018-08-11 22:56:07
+ */
+
+//  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
 global.setTimeout = function (fn) {
   fn();
 };
@@ -21898,20 +21949,53 @@ global.clearTimeout = function () {};
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 const RenameLayers = __webpack_require__(/*! ./RenameLayers.jsx */ "./src/RenameLayers.jsx");
+const NoSelection = __webpack_require__(/*! ./NoSelection.jsx */ "./src/NoSelection.jsx");
+
+const whereTo = {
+  RENAME: 0,
+  FIND: 1,
+  SETTINGS: 3
+};
 
 let dialog;
-function getDialog(selection) {
+function showDialog(selection, to) {
+  const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null;
+
   if (dialog == null) {
     dialog = document.createElement("dialog");
-    ReactDOM.render(React.createElement(RenameLayers, { dialog: dialog, selection: selection }), dialog);
+    switch (where) {
+      case whereTo.RENAME:
+        ReactDOM.render(React.createElement(RenameLayers, { dialog: dialog, selection: selection }), dialog);
+        break;
+
+      case whereTo.FIND:
+        ReactDOM.render(React.createElement(RenameLayers, { dialog: dialog, selection: selection }), dialog);
+        break;
+
+      case whereTo.SETTINGS:
+        break;
+
+      default:
+        ReactDOM.render(React.createElement(NoSelection, { dialog: dialog }), dialog);
+        break;
+    }
   }
-  return dialog;
+
+  // Clean dialog so it can be reused
+  dialog.addEventListener("close", () => {
+    dialog = null;
+  });
+
+  return document.appendChild(dialog).showModal();
 }
 
 module.exports = {
   commands: {
-    menuCommand: function (selection) {
-      return document.appendChild(getDialog(selection)).showModal();
+    renameCommand: function (selection) {
+      return showDialog(selection, whereTo.RENAME);
+    },
+    findReplaceCommand: function (selection) {
+      return showDialog(selection, whereTo.FIND);
     }
   }
 };

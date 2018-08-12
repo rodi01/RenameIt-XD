@@ -9,8 +9,19 @@
   "uiEntryPoints": [
     {
       "type": "menu",
-      "label": "Rename Selected Layers",
-      "commandId": "menuCommand"
+      "label": "Rename It",
+      "menuItems": [
+        {
+          "type": "menu",
+          "label": "Rename Selected Layers",
+          "commandId": "renameCommand"
+        },
+        {
+          "type": "menu",
+          "label": "Find & Replace Selected Layers",
+          "commandId": "findReplaceCommand"
+        }
+      ]
     }
   ]
 }
