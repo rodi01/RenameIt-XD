@@ -38,7 +38,8 @@ h3 {
   align-items: center;
 }
 
-.inputWrapper input {
+.inputWrapper input[type="number"],
+.inputWrapper input[type="text"] {
   width: 100%;
 }
 .inputWrapper label {
@@ -61,4 +62,23 @@ h3 {
 
 #preview strong {
   font-weight: bold;
+}
+
+.findReplace .inputWrapper label {
+  width: 90px;
+}
+
+.caseSesitiveWrapper {
+  padding-top: 8px;
+}
+
+#case {
+  width: 14px;
+  height: 14px;
+  background-size: 14px 14px;
+}
+#case img {
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
 }

@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-11 22:53:11
+ * @Last Modified time: 2018-08-24 21:49:55
  */
 
 const React = require("react")
@@ -16,7 +16,6 @@ class RenameLayers extends React.Component {
     this.state = {
       valueAttr: "",
       sequence: 1,
-      inputFocus: false,
       previewData: [],
     }
     this.onNameInputChange = this.onNameInputChange.bind(this)
@@ -56,7 +55,6 @@ class RenameLayers extends React.Component {
     this.setState(
       {
         sequence: e.target.value,
-        inputFocus: false,
       },
       () => this.previewUpdate()
     )
@@ -93,7 +91,6 @@ class RenameLayers extends React.Component {
     this.setState(
       {
         valueAttr: `${this.state.valueAttr}${event.target.getAttribute("data-char")}`,
-        inputFocus: true,
       },
       () => this.previewUpdate()
     )

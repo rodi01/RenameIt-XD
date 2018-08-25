@@ -14,6 +14,7 @@ global.clearTimeout = function() {}
 const React = require("react")
 const ReactDOM = require("react-dom")
 const RenameLayers = require("./RenameLayers.jsx")
+const FindReplace = require("./FindReplaceLayers.jsx")
 const NoSelection = require("./NoSelection.jsx")
 
 const whereTo = {
@@ -34,7 +35,7 @@ function showDialog(selection, to) {
         break
 
       case whereTo.FIND:
-        ReactDOM.render(<RenameLayers dialog={dialog} selection={selection} />, dialog)
+        ReactDOM.render(<FindReplace dialog={dialog} selection={selection} />, dialog)
         break
 
       case whereTo.SETTINGS:

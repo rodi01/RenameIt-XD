@@ -186,7 +186,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "h1 + div {\n  margin-top: 16px;\n}\n\n#keywordsSection {\n  padding-top: 24px;\n}\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em;\n}\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px;\n}\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px;\n}\n\n.keywordBtn button {\n  margin: 0;\n}\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n\n.inputWrapper input {\n  width: 100%;\n}\n.inputWrapper label {\n  flex-shrink: 0;\n  width: 70px;\n}\n\n.sequenceInput input {\n  width: 60px;\n}\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: flex;\n  flex-direction: row;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n#preview strong {\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "h1 + div {\n  margin-top: 16px;\n}\n\n#keywordsSection {\n  padding-top: 24px;\n}\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em;\n}\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px;\n}\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px;\n}\n\n.keywordBtn button {\n  margin: 0;\n}\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n\n.inputWrapper input[type=\"number\"],\n.inputWrapper input[type=\"text\"] {\n  width: 100%;\n}\n.inputWrapper label {\n  flex-shrink: 0;\n  width: 70px;\n}\n\n.sequenceInput input {\n  width: 60px;\n}\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: flex;\n  flex-direction: row;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n#preview strong {\n  font-weight: bold;\n}\n\n.findReplace .inputWrapper label {\n  width: 90px;\n}\n\n.caseSesitiveWrapper {\n  padding-top: 8px;\n}\n\n#case {\n  width: 14px;\n  height: 14px;\n  background-size: 14px 14px;\n}\n#case img {\n  width: 14px;\n  height: 14px;\n  margin-left: 8px;\n}\n", ""]);
 
 // exports
 
@@ -21480,6 +21480,184 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./src/FindReplaceLayers.jsx":
+/*!***********************************!*\
+  !*** ./src/FindReplaceLayers.jsx ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * @Author: Rodrigo Soares 
+ * @Date: 2018-08-08 22:28:53 
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2018-08-25 16:51:23
+ */
+
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const FindReplace = __webpack_require__(/*! ./lib/FindReplace.js */ "./src/lib/FindReplace.js");
+const Preview = __webpack_require__(/*! ./Preview.jsx */ "./src/Preview.jsx");
+const style = __webpack_require__(/*! ./styles.css */ "./src/styles.css");
+
+class FindReplaceLayers extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      findValue: "",
+      replaceValue: "",
+      caseSensitive: false,
+      caseImg: "../assets/unchecked.png",
+      previewData: []
+    };
+    this.onFindInputChange = this.onFindInputChange.bind(this);
+    this.onCaseSensitiveChange = this.onCaseSensitiveChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onCancelClick = this.onCancelClick.bind(this);
+    this.enterFunction = this.enterFunction.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.enterFunction, false);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.enterFunction, false);
+  }
+
+  doRename(item) {
+    const opts = {
+      layerName: item.name,
+      findText: this.state.findValue,
+      replaceWith: this.state.replaceValue,
+      caseSensitive: this.state.caseSensitive
+    };
+
+    return FindReplace.matchString(opts) ? FindReplace.findReplace(opts) : false;
+  }
+
+  onFindInputChange(e) {
+    const isFind = e.target.id === "find";
+    this.setState({
+      findValue: isFind ? e.target.value : this.state.findValue,
+      replaceValue: !isFind ? e.target.value : this.state.replaceValue
+    }, () => this.previewUpdate());
+  }
+
+  onCaseSensitiveChange() {
+    this.setState({
+      caseSensitive: !this.state.caseSensitive,
+      caseImg: !this.state.caseSensitive ? "../assets/checked.png" : "../assets/unchecked.png"
+    }, () => this.previewUpdate());
+  }
+
+  previewUpdate() {
+    const renamed = [];
+    this.props.selection.items.forEach(item => {
+      const name = this.doRename(item);
+      if (name) {
+        renamed.push(name);
+      }
+    });
+    this.setState({ previewData: renamed });
+  }
+
+  enterFunction(event) {
+    if (event.keyCode === 13) {
+      // Enter is pressed
+      this.onSubmit();
+    }
+  }
+
+  onSubmit(e) {
+    this.props.selection.items.forEach(item => {
+      const name = this.doRename(item);
+      if (name) {
+        item.name = name;
+      }
+    });
+
+    this.props.dialog.close();
+  }
+
+  onCancelClick(e) {
+    this.props.dialog.close();
+  }
+
+  render() {
+    return React.createElement(
+      "form",
+      { className: "findReplace", method: "dialog", style: { width: 320, height: 235 } },
+      React.createElement(
+        "h1",
+        null,
+        "Find & Replace Selected Layers"
+      ),
+      React.createElement(
+        "div",
+        { className: "inputWrapper" },
+        React.createElement(
+          "label",
+          null,
+          "Find"
+        ),
+        React.createElement("input", {
+          type: "text",
+          id: "find",
+          value: this.state.findValue,
+          onChange: this.onFindInputChange
+        })
+      ),
+      React.createElement(
+        "div",
+        { className: "inputWrapper" },
+        React.createElement(
+          "label",
+          null,
+          "Replace"
+        ),
+        React.createElement("input", {
+          type: "text",
+          id: "replace",
+          value: this.state.replaceValue,
+          onChange: this.onFindInputChange
+        })
+      ),
+      React.createElement(
+        "div",
+        { className: "inputWrapper caseSesitiveWrapper" },
+        React.createElement(
+          "label",
+          null,
+          "Case Sensitive"
+        ),
+        React.createElement(
+          "a",
+          { href: "#", id: "case", onClick: this.onCaseSensitiveChange },
+          React.createElement("img", { src: this.state.caseImg })
+        )
+      ),
+      React.createElement(Preview, { data: this.state.previewData }),
+      React.createElement(
+        "footer",
+        null,
+        React.createElement(
+          "button",
+          { type: "submit", "uxp-variant": "secondary", onClick: this.onCancelClick },
+          "Cancel"
+        ),
+        React.createElement(
+          "button",
+          { type: "submit", "uxp-variant": "cta", onClick: this.onSubmit },
+          "Rename"
+        )
+      )
+    );
+  }
+}
+
+module.exports = FindReplaceLayers;
+
+/***/ }),
+
 /***/ "./src/NoSelection.jsx":
 /*!*****************************!*\
   !*** ./src/NoSelection.jsx ***!
@@ -21611,7 +21789,7 @@ module.exports = Preview;
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-11 22:53:11
+ * @Last Modified time: 2018-08-24 21:49:55
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -21625,7 +21803,6 @@ class RenameLayers extends React.Component {
     this.state = {
       valueAttr: "",
       sequence: 1,
-      inputFocus: false,
       previewData: []
     };
     this.onNameInputChange = this.onNameInputChange.bind(this);
@@ -21663,8 +21840,7 @@ class RenameLayers extends React.Component {
 
   onSequenceInputChange(e) {
     this.setState({
-      sequence: e.target.value,
-      inputFocus: false
+      sequence: e.target.value
     }, () => this.previewUpdate());
   }
 
@@ -21697,8 +21873,7 @@ class RenameLayers extends React.Component {
   onButtonClicked(event) {
     event.preventDefault();
     this.setState({
-      valueAttr: `${this.state.valueAttr}${event.target.getAttribute("data-char")}`,
-      inputFocus: true
+      valueAttr: `${this.state.valueAttr}${event.target.getAttribute("data-char")}`
     }, () => this.previewUpdate());
   }
 
@@ -21792,6 +21967,67 @@ class RenameLayers extends React.Component {
 }
 
 module.exports = RenameLayers;
+
+/***/ }),
+
+/***/ "./src/lib/FindReplace.js":
+/*!********************************!*\
+  !*** ./src/lib/FindReplace.js ***!
+  \********************************/
+/*! exports provided: findReplace, matchString */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findReplace", function() { return findReplace; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "matchString", function() { return matchString; });
+/*
+ * @Author: Rodrigo Soares 
+ * @Date: 2018-08-24 21:05:32 
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2018-08-25 16:35:26
+ */
+
+/**
+ * Escape Regexp
+ *
+ * @param  {string} str
+ * @return {string}     Escaped value
+ */
+function escapeRegExp(str) {
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+/**
+ * Find and Replace layer name
+ *
+ * @param  {{layerName: string, findText: string, replaceWith: string, caseSensitive:boolean}} options
+ * @return {string}         The renamed layer
+ */
+function findReplace(options) {
+  const str = String(options.findText);
+  let reg = options.caseSensitive ? new RegExp(escapeRegExp(str), "g") : new RegExp(escapeRegExp(str), "gi");
+
+  return options.layerName.replace(reg, options.replaceWith);
+}
+
+/**
+ * Match string for preview
+ *
+ * @param {{layerName: string, findText: string, replaceWith: string, caseSensitive:boolean}} options
+ * @returns {boolean}
+ */
+function matchString(options) {
+  if (options.findText.length <= 0) return false;
+  let str = String(options.findText);
+  let layerName = options.layerName;
+  if (!options.caseSensitive) {
+    str = str.toLowerCase();
+    layerName = layerName.toLowerCase();
+  }
+
+  return layerName.includes(str);
+}
 
 /***/ }),
 
@@ -21949,6 +22185,7 @@ global.clearTimeout = function () {};
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 const RenameLayers = __webpack_require__(/*! ./RenameLayers.jsx */ "./src/RenameLayers.jsx");
+const FindReplace = __webpack_require__(/*! ./FindReplaceLayers.jsx */ "./src/FindReplaceLayers.jsx");
 const NoSelection = __webpack_require__(/*! ./NoSelection.jsx */ "./src/NoSelection.jsx");
 
 const whereTo = {
@@ -21969,7 +22206,7 @@ function showDialog(selection, to) {
         break;
 
       case whereTo.FIND:
-        ReactDOM.render(React.createElement(RenameLayers, { dialog: dialog, selection: selection }), dialog);
+        ReactDOM.render(React.createElement(FindReplace, { dialog: dialog, selection: selection }), dialog);
         break;
 
       case whereTo.SETTINGS:
