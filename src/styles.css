@@ -71,14 +71,3 @@ h3 {
 .caseSesitiveWrapper {
   padding-top: 8px;
 }
-
-#case {
-  width: 14px;
-  height: 14px;
-  background-size: 14px 14px;
-}
-#case img {
-  width: 14px;
-  height: 14px;
-  margin-left: 8px;
-}

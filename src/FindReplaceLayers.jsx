@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-25 16:51:23
+ * @Last Modified time: 2018-08-26 11:42:19
  */
 
 const React = require("react")
@@ -17,11 +17,9 @@ class FindReplaceLayers extends React.Component {
       findValue: "",
       replaceValue: "",
       caseSensitive: false,
-      caseImg: "../assets/unchecked.png",
       previewData: [],
     }
     this.onFindInputChange = this.onFindInputChange.bind(this)
-    this.onCaseSensitiveChange = this.onCaseSensitiveChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onCancelClick = this.onCancelClick.bind(this)
     this.enterFunction = this.enterFunction.bind(this)
@@ -60,7 +58,6 @@ class FindReplaceLayers extends React.Component {
     this.setState(
       {
         caseSensitive: !this.state.caseSensitive,
-        caseImg: !this.state.caseSensitive ? "../assets/checked.png" : "../assets/unchecked.png",
       },
       () => this.previewUpdate()
     )
@@ -101,7 +98,7 @@ class FindReplaceLayers extends React.Component {
 
   render() {
     return (
-      <form className="findReplace" method="dialog" style={{ width: 320, height: 235 }}>
+      <form className="findReplace" method="dialog" style={{ width: 320, height: 224 }}>
         <h1>Find & Replace Selected Layers</h1>
         <div className="inputWrapper">
           <label>Find</label>
@@ -124,10 +121,12 @@ class FindReplaceLayers extends React.Component {
         </div>
         <div className="inputWrapper caseSesitiveWrapper">
           <label>Case Sensitive</label>
-          {/* Faking checkbox for now */}
-          <a href="#" id="case" onClick={this.onCaseSensitiveChange}>
-            <img src={this.state.caseImg} />
-          </a>
+          <input
+            type="checkbox"
+            id="case"
+            defaultChecked={this.state.caseSensitive}
+            ref={(el) => el && (el.onchange = () => this.onCaseSensitiveChange(el))}
+          />
         </div>
 
         <Preview data={this.state.previewData} />

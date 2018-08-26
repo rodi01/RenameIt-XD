@@ -186,7 +186,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "h1 + div {\n  margin-top: 16px;\n}\n\n#keywordsSection {\n  padding-top: 24px;\n}\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em;\n}\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px;\n}\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px;\n}\n\n.keywordBtn button {\n  margin: 0;\n}\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n\n.inputWrapper input[type=\"number\"],\n.inputWrapper input[type=\"text\"] {\n  width: 100%;\n}\n.inputWrapper label {\n  flex-shrink: 0;\n  width: 70px;\n}\n\n.sequenceInput input {\n  width: 60px;\n}\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: flex;\n  flex-direction: row;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n#preview strong {\n  font-weight: bold;\n}\n\n.findReplace .inputWrapper label {\n  width: 90px;\n}\n\n.caseSesitiveWrapper {\n  padding-top: 8px;\n}\n\n#case {\n  width: 14px;\n  height: 14px;\n  background-size: 14px 14px;\n}\n#case img {\n  width: 14px;\n  height: 14px;\n  margin-left: 8px;\n}\n", ""]);
+exports.push([module.i, "h1 + div {\n  margin-top: 16px;\n}\n\n#keywordsSection {\n  padding-top: 24px;\n}\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em;\n}\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px;\n}\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px;\n}\n\n.keywordBtn button {\n  margin: 0;\n}\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\n\n.inputWrapper input[type=\"number\"],\n.inputWrapper input[type=\"text\"] {\n  width: 100%;\n}\n.inputWrapper label {\n  flex-shrink: 0;\n  width: 70px;\n}\n\n.sequenceInput input {\n  width: 60px;\n}\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: flex;\n  flex-direction: row;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n#preview strong {\n  font-weight: bold;\n}\n\n.findReplace .inputWrapper label {\n  width: 90px;\n}\n\n.caseSesitiveWrapper {\n  padding-top: 8px;\n}\n", ""]);
 
 // exports
 
@@ -21491,7 +21491,7 @@ module.exports = g;
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-25 16:51:23
+ * @Last Modified time: 2018-08-26 11:42:19
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -21506,11 +21506,9 @@ class FindReplaceLayers extends React.Component {
       findValue: "",
       replaceValue: "",
       caseSensitive: false,
-      caseImg: "../assets/unchecked.png",
       previewData: []
     };
     this.onFindInputChange = this.onFindInputChange.bind(this);
-    this.onCaseSensitiveChange = this.onCaseSensitiveChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
     this.enterFunction = this.enterFunction.bind(this);
@@ -21544,8 +21542,7 @@ class FindReplaceLayers extends React.Component {
 
   onCaseSensitiveChange() {
     this.setState({
-      caseSensitive: !this.state.caseSensitive,
-      caseImg: !this.state.caseSensitive ? "../assets/checked.png" : "../assets/unchecked.png"
+      caseSensitive: !this.state.caseSensitive
     }, () => this.previewUpdate());
   }
 
@@ -21585,7 +21582,7 @@ class FindReplaceLayers extends React.Component {
   render() {
     return React.createElement(
       "form",
-      { className: "findReplace", method: "dialog", style: { width: 320, height: 235 } },
+      { className: "findReplace", method: "dialog", style: { width: 320, height: 224 } },
       React.createElement(
         "h1",
         null,
@@ -21629,11 +21626,12 @@ class FindReplaceLayers extends React.Component {
           null,
           "Case Sensitive"
         ),
-        React.createElement(
-          "a",
-          { href: "#", id: "case", onClick: this.onCaseSensitiveChange },
-          React.createElement("img", { src: this.state.caseImg })
-        )
+        React.createElement("input", {
+          type: "checkbox",
+          id: "case",
+          defaultChecked: this.state.caseSensitive,
+          ref: el => el && (el.onchange = () => this.onCaseSensitiveChange(el))
+        })
       ),
       React.createElement(Preview, { data: this.state.previewData }),
       React.createElement(
