@@ -2,13 +2,14 @@ V1.0:
   ✔ No layer selected dialog @done(18-08-11 22:54)
   ✔ Menu @done(18-08-11 22:54)
   ✔ Find and Replace @done(18-08-26 11:32)
+  ☐ History
+  ☐ Readme
   ☐ Website
   ☐ Tutorial
   ☐ Blog Post
 
 v1.1: 
-  ☐ History
-  ☐ Rename Artboard
+  ☐ Dedicated Rename Artboard Menu
   ☐ Search scope
   ☐ Settings
   ☐ Mixpanel
