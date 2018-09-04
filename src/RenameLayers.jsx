@@ -2,13 +2,14 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-24 21:49:55
+ * @Last Modified time: 2018-09-03 21:38:35
  */
 
 const React = require("react")
 const Rename = require("./lib/Rename.js")
 const Preview = require("./Preview.jsx")
-const style = require("./styles.css")
+const HistoryDropdown = require("./HistoryDropdown.jsx")
+const style = require("./styles.scss")
 
 class RenameLayers extends React.Component {
   constructor(props) {
@@ -55,6 +56,15 @@ class RenameLayers extends React.Component {
     this.setState(
       {
         sequence: e.target.value,
+      },
+      () => this.previewUpdate()
+    )
+  }
+
+  handleHistory(str) {
+    this.setState(
+      {
+        valueAttr: str,
       },
       () => this.previewUpdate()
     )
@@ -107,6 +117,8 @@ class RenameLayers extends React.Component {
       { id: "parentName", char: "%o", text: "Parent Name" },
     ]
 
+    const options = ["one", "two two teo", "three"]
+
     const listItems = buttons.map((b) => (
       <li key={b.id} className="keywordBtn">
         <button
@@ -120,9 +132,9 @@ class RenameLayers extends React.Component {
       </li>
     ))
     return (
-      <form method="dialog" style={{ width: 320, height: 350 }}>
+      <form method="dialog" style={{ width: 330, height: 350 }}>
         <h1>Rename Selected Layers</h1>
-        <div className="inputWrapper">
+        <div className="inputWrapper nameInput">
           <label>Name</label>
           <input
             type="text"
@@ -130,6 +142,11 @@ class RenameLayers extends React.Component {
             placeholder="Item %n"
             value={this.state.valueAttr}
             onChange={this.onNameInputChange}
+          />
+          <HistoryDropdown
+            dropdownId="nameDD"
+            handleHistory={this.handleHistory.bind(this)}
+            menuData={options}
           />
         </div>
         <div className="inputWrapper sequenceInput">

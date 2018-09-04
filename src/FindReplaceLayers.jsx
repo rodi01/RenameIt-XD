@@ -2,13 +2,13 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-26 11:42:19
+ * @Last Modified time: 2018-09-02 21:18:33
  */
 
 const React = require("react")
 const FindReplace = require("./lib/FindReplace.js")
 const Preview = require("./Preview.jsx")
-const style = require("./styles.css")
+const style = require("./styles.scss")
 
 class FindReplaceLayers extends React.Component {
   constructor(props) {
