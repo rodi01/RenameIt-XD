@@ -21491,12 +21491,14 @@ module.exports = g;
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-02 21:18:33
+ * @Last Modified time: 2018-09-04 22:19:56
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const FindReplace = __webpack_require__(/*! ./lib/FindReplace.js */ "./src/lib/FindReplace.js");
 const Preview = __webpack_require__(/*! ./Preview.jsx */ "./src/Preview.jsx");
+const History = __webpack_require__(/*! ./lib/History.js */ "./src/lib/History.js");
+const HistoryDropdown = __webpack_require__(/*! ./HistoryDropdown.jsx */ "./src/HistoryDropdown.jsx");
 const style = __webpack_require__(/*! ./styles.scss */ "./src/styles.scss");
 
 class FindReplaceLayers extends React.Component {
@@ -21506,12 +21508,25 @@ class FindReplaceLayers extends React.Component {
       findValue: "",
       replaceValue: "",
       caseSensitive: false,
-      previewData: []
+      previewData: [],
+      findHistory: [],
+      replaceHistory: []
     };
+
+    History.getFindHistory().then(item => {
+      this.setState({ findHistory: item });
+    });
+
+    History.getReplaceHistory().then(item => {
+      this.setState({ replaceHistory: item });
+    });
+
     this.onFindInputChange = this.onFindInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
     this.enterFunction = this.enterFunction.bind(this);
+    this.handleFindHistory = this.handleFindHistory.bind(this);
+    this.handleReplaceHistory = this.handleReplaceHistory.bind(this);
   }
 
   componentDidMount() {
@@ -21546,6 +21561,18 @@ class FindReplaceLayers extends React.Component {
     }, () => this.previewUpdate());
   }
 
+  handleFindHistory(str) {
+    this.setState({
+      findValue: str
+    }, () => this.previewUpdate());
+  }
+
+  handleReplaceHistory(str) {
+    this.setState({
+      replaceValue: str
+    }, () => this.previewUpdate());
+  }
+
   previewUpdate() {
     const renamed = [];
     this.props.selection.items.forEach(item => {
@@ -21571,6 +21598,10 @@ class FindReplaceLayers extends React.Component {
         item.name = name;
       }
     });
+
+    // History
+    History.setFindHistory(this.state.findValue);
+    History.setReplaceHistory(this.state.replaceValue);
 
     this.props.dialog.close();
   }
@@ -21600,7 +21631,13 @@ class FindReplaceLayers extends React.Component {
           type: "text",
           id: "find",
           value: this.state.findValue,
-          onChange: this.onFindInputChange
+          onChange: this.onFindInputChange,
+          tabIndex: "0"
+        }),
+        React.createElement(HistoryDropdown, {
+          dropdownId: "findDD",
+          handleHistory: this.handleFindHistory,
+          menuData: this.state.findHistory
         })
       ),
       React.createElement(
@@ -21615,7 +21652,13 @@ class FindReplaceLayers extends React.Component {
           type: "text",
           id: "replace",
           value: this.state.replaceValue,
-          onChange: this.onFindInputChange
+          onChange: this.onFindInputChange,
+          tabIndex: "1"
+        }),
+        React.createElement(HistoryDropdown, {
+          dropdownId: "replaceDD",
+          handleHistory: this.handleReplaceHistory,
+          menuData: this.state.replaceHistory
         })
       ),
       React.createElement(
@@ -21667,7 +21710,7 @@ module.exports = FindReplaceLayers;
  * @Author: Rodrigo Soares 
  * @Date: 2018-09-02 15:24:03 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-03 23:15:14
+ * @Last Modified time: 2018-09-04 21:57:37
  */
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
@@ -21726,6 +21769,11 @@ class HistoryDropdown extends React.Component {
       ));
     } else {
       menuItems = React.createElement("menuitem", { label: "Empty History", disabled: true });
+      fakeMenu = React.createElement(
+        "div",
+        { style: { fontSize: 14, paddingLeft: 22, paddingRight: 22 } },
+        "Empty History"
+      );
     }
     return React.createElement(
       "div",
@@ -21890,12 +21938,13 @@ module.exports = Preview;
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-03 21:38:35
+ * @Last Modified time: 2018-09-07 08:21:35
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const Rename = __webpack_require__(/*! ./lib/Rename.js */ "./src/lib/Rename.js");
 const Preview = __webpack_require__(/*! ./Preview.jsx */ "./src/Preview.jsx");
+const History = __webpack_require__(/*! ./lib/History.js */ "./src/lib/History.js");
 const HistoryDropdown = __webpack_require__(/*! ./HistoryDropdown.jsx */ "./src/HistoryDropdown.jsx");
 const style = __webpack_require__(/*! ./styles.scss */ "./src/styles.scss");
 
@@ -21905,18 +21954,26 @@ class RenameLayers extends React.Component {
     this.state = {
       valueAttr: "",
       sequence: 1,
-      previewData: []
+      previewData: [],
+      renameHistory: []
     };
+
     this.onNameInputChange = this.onNameInputChange.bind(this);
     this.onSequenceInputChange = this.onSequenceInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
     this.enterFunction = this.enterFunction.bind(this);
     this.onButtonClicked = this.onButtonClicked.bind(this);
+    this.handleHistory = this.handleHistory.bind(this);
+
+    this.history = new History(History.RENAME_HISTORY_KEY);
+    console.log("key:", this.history.getCurrentKey());
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     document.addEventListener("keydown", this.enterFunction, false);
+    const settings = await this.history.getHistory();
+    this.setState({ renameHistory: settings });
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.enterFunction, false);
@@ -21967,10 +22024,15 @@ class RenameLayers extends React.Component {
     }
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     this.props.selection.items.forEach((item, index) => {
       item.name = this.doRename(item, index);
     });
+
+    // History
+    const historyArr = History.createArr(this.state.valueAttr, this.state.renameHistory);
+    await History.set(this.history.getCurrentKey(), historyArr);
+
     this.props.dialog.close();
   }
 
@@ -21987,8 +22049,6 @@ class RenameLayers extends React.Component {
 
   render() {
     const buttons = [{ id: "currentLayer", char: "%*", text: "Layer Name" }, { id: "layerWidth", char: "%w", text: "Layer Width" }, { id: "layerHeight", char: "%h", text: "Layer Height" }, { id: "sequenceAsc", char: "%n", text: "Num. Sequence ASC" }, { id: "sequenceDesc", char: "%N", text: "Num. Sequence DESC" }, { id: "sequenceAlpha", char: "%A", text: "Alphabet Sequence" }, { id: "parentName", char: "%o", text: "Parent Name" }];
-
-    const options = ["one", "two two teo", "three"];
 
     const listItems = buttons.map(b => React.createElement(
       "li",
@@ -22029,8 +22089,8 @@ class RenameLayers extends React.Component {
         }),
         React.createElement(HistoryDropdown, {
           dropdownId: "nameDD",
-          handleHistory: this.handleHistory.bind(this),
-          menuData: options
+          handleHistory: this.handleHistory,
+          menuData: this.state.renameHistory
         })
       ),
       React.createElement(
@@ -22143,6 +22203,80 @@ function matchString(options) {
 
   return layerName.includes(str);
 }
+
+/***/ }),
+
+/***/ "./src/lib/History.js":
+/*!****************************!*\
+  !*** ./src/lib/History.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * @Author: Rodrigo Soares 
+ * @Date: 2018-09-02 15:18:16 
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2018-09-06 23:00:31
+ */
+const StorageHelper = __webpack_require__(/*! ./storage.js */ "./src/lib/storage.js");
+
+const MAX_HISTORY = 5;
+const RENAME_HISTORY_KEY = "RenameHistory";
+const FIND_HISTORY_KEY = "FindHistory";
+const REPLACE_HISTORY_KEY = "ReplaceHistory";
+
+class History extends StorageHelper {
+  constructor(currentKey) {
+    super();
+    this.settings = null;
+    this.currentKey = currentKey;
+  }
+
+  static get RENAME_HISTORY_KEY() {
+    return RENAME_HISTORY_KEY;
+  }
+
+  getCurrentKey() {
+    return this.currentKey;
+  }
+
+  /**
+   *  Creates arrays of max history and checks if value exists
+   * @param {String} value
+   * @param {Array} arr
+   * @returns {Array}
+   * @private
+   */
+  static createArr(value, arr) {
+    console.log("value", value);
+    console.log("arr", arr);
+    console.log("max", MAX_HISTORY);
+
+    const pos = arr.indexOf(value);
+    if (pos !== -1) arr.splice(pos, 1);
+    arr.unshift(value);
+    const newArr = arr.filter(entry => entry.trim() !== "");
+    if (newArr.length <= MAX_HISTORY) {
+      return newArr;
+    }
+
+    return newArr.slice(0, MAX_HISTORY);
+  }
+
+  async getHistory() {
+    if (this.settings === null) {
+      console.log("Getting Settings");
+      this.settings = await History.get(this.currentKey, []);
+    }
+
+    console.log("new settings", this.settings);
+
+    return this.settings;
+  }
+}
+
+module.exports = History;
 
 /***/ }),
 
@@ -22277,6 +22411,93 @@ function rename(options) {
 
 /***/ }),
 
+/***/ "./src/lib/storage.js":
+/*!****************************!*\
+  !*** ./src/lib/storage.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * Copyright (c) 2018. by Pablo Klaschka
+ */
+
+const storage = __webpack_require__(/*! uxp */ "uxp").storage;
+const fs = storage.localFileSystem;
+const filename = "renameit-settings.json";
+
+class storageHelper {
+  /**
+   * Creates a data file if none was previously existent.
+   * @return {Promise<storage.File>} The data file
+   * @private
+   */
+  static async init() {
+    let dataFolder = await fs.getDataFolder();
+    try {
+      const file = await dataFolder.getEntry(filename);
+      if (file) {
+        // noinspection JSValidateTypes
+        return file;
+      } else {
+        throw new Error(`${filename} was not a file.`);
+      }
+    } catch (error) {
+      console.log("Creating file");
+      const file = await dataFolder.createEntry(filename, {
+        type: storage.types.file,
+        overwrite: true
+      });
+      if (file.isFile) {
+        await file.write("{}", { append: false });
+        // noinspection JSValidateTypes
+        return file;
+      } else {
+        throw new Error(`${filename} was not a file.`);
+      }
+    }
+  }
+
+  /**
+   * Retrieves a value from storage. Saves default value if none is set.
+   * @param {string} key The identifier
+   * @param {*} defaultValue The default value. Gets saved and returned if no value was previously set for the speciefied key.
+   * @return {Promise<*>} The value retrieved from storage. If none is saved, the `defaultValue` is returned.
+   */
+  static async get(key, defaultValue) {
+    console.log("In Get");
+
+    const dataFile = await this.init();
+    let object = JSON.parse((await dataFile.read({ format: storage.formats.utf8 })).toString());
+    if (object[key] === undefined) {
+      await this.set(key, defaultValue);
+      return defaultValue;
+    } else {
+      return object[key];
+    }
+  }
+
+  /**
+   * Saves a certain key-value-pair to the storage.
+   * @param {string} key The identifier
+   * @param {*} value
+   * @return {Promise<void>}
+   */
+  static async set(key, value) {
+    const dataFile = await this.init();
+    let object = JSON.parse((await dataFile.read({ format: storage.formats.utf8 })).toString());
+    object[key] = value;
+    return await dataFile.write(JSON.stringify(object), {
+      append: false,
+      format: storage.formats.utf8
+    });
+  }
+}
+
+module.exports = storageHelper;
+
+/***/ }),
+
 /***/ "./src/main.jsx":
 /*!**********************!*\
   !*** ./src/main.jsx ***!
@@ -22382,6 +22603,17 @@ var update = __webpack_require__(/*! ../node_modules/style-loader/lib/addStyles.
 if(content.locals) module.exports = content.locals;
 
 if(false) {}
+
+/***/ }),
+
+/***/ "uxp":
+/*!**********************!*\
+  !*** external "uxp" ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("uxp");
 
 /***/ })
 

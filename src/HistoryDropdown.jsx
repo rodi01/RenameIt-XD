@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-09-02 15:24:03 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-03 23:15:14
+ * @Last Modified time: 2018-09-04 21:57:37
  */
 const React = require("react")
 
@@ -66,6 +66,9 @@ class HistoryDropdown extends React.Component {
       ))
     } else {
       menuItems = <menuitem label="Empty History" disabled />
+      fakeMenu = (
+        <div style={{ fontSize: 14, paddingLeft: 22, paddingRight: 22 }}>Empty History</div>
+      )
     }
     return (
       <div id={this.props.dropdownId} className={`dropdown ${this.state.isOpened}`}>

@@ -2,12 +2,14 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-02 21:18:33
+ * @Last Modified time: 2018-09-04 22:19:56
  */
 
 const React = require("react")
 const FindReplace = require("./lib/FindReplace.js")
 const Preview = require("./Preview.jsx")
+const History = require("./lib/History.js")
+const HistoryDropdown = require("./HistoryDropdown.jsx")
 const style = require("./styles.scss")
 
 class FindReplaceLayers extends React.Component {
@@ -18,11 +20,24 @@ class FindReplaceLayers extends React.Component {
       replaceValue: "",
       caseSensitive: false,
       previewData: [],
+      findHistory: [],
+      replaceHistory: [],
     }
+
+    History.getFindHistory().then((item) => {
+      this.setState({ findHistory: item })
+    })
+
+    History.getReplaceHistory().then((item) => {
+      this.setState({ replaceHistory: item })
+    })
+
     this.onFindInputChange = this.onFindInputChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onCancelClick = this.onCancelClick.bind(this)
     this.enterFunction = this.enterFunction.bind(this)
+    this.handleFindHistory = this.handleFindHistory.bind(this)
+    this.handleReplaceHistory = this.handleReplaceHistory.bind(this)
   }
 
   componentDidMount() {
@@ -63,6 +78,24 @@ class FindReplaceLayers extends React.Component {
     )
   }
 
+  handleFindHistory(str) {
+    this.setState(
+      {
+        findValue: str,
+      },
+      () => this.previewUpdate()
+    )
+  }
+
+  handleReplaceHistory(str) {
+    this.setState(
+      {
+        replaceValue: str,
+      },
+      () => this.previewUpdate()
+    )
+  }
+
   previewUpdate() {
     const renamed = []
     this.props.selection.items.forEach((item) => {
@@ -89,6 +122,10 @@ class FindReplaceLayers extends React.Component {
       }
     })
 
+    // History
+    History.setFindHistory(this.state.findValue)
+    History.setReplaceHistory(this.state.replaceValue)
+
     this.props.dialog.close()
   }
 
@@ -107,6 +144,13 @@ class FindReplaceLayers extends React.Component {
             id="find"
             value={this.state.findValue}
             onChange={this.onFindInputChange}
+            tabIndex="0"
+          />
+
+          <HistoryDropdown
+            dropdownId="findDD"
+            handleHistory={this.handleFindHistory}
+            menuData={this.state.findHistory}
           />
         </div>
 
@@ -117,6 +161,12 @@ class FindReplaceLayers extends React.Component {
             id="replace"
             value={this.state.replaceValue}
             onChange={this.onFindInputChange}
+            tabIndex="1"
+          />
+          <HistoryDropdown
+            dropdownId="replaceDD"
+            handleHistory={this.handleReplaceHistory}
+            menuData={this.state.replaceHistory}
           />
         </div>
         <div className="inputWrapper caseSesitiveWrapper">

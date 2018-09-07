@@ -2,12 +2,13 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-03 21:38:35
+ * @Last Modified time: 2018-09-07 08:21:35
  */
 
 const React = require("react")
 const Rename = require("./lib/Rename.js")
 const Preview = require("./Preview.jsx")
+const History = require("./lib/History.js")
 const HistoryDropdown = require("./HistoryDropdown.jsx")
 const style = require("./styles.scss")
 
@@ -18,17 +19,25 @@ class RenameLayers extends React.Component {
       valueAttr: "",
       sequence: 1,
       previewData: [],
+      renameHistory: [],
     }
+
     this.onNameInputChange = this.onNameInputChange.bind(this)
     this.onSequenceInputChange = this.onSequenceInputChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onCancelClick = this.onCancelClick.bind(this)
     this.enterFunction = this.enterFunction.bind(this)
     this.onButtonClicked = this.onButtonClicked.bind(this)
+    this.handleHistory = this.handleHistory.bind(this)
+
+    this.history = new History(History.RENAME_HISTORY_KEY)
+    console.log("key:", this.history.getCurrentKey())
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     document.addEventListener("keydown", this.enterFunction, false)
+    const settings = await this.history.getHistory()
+    this.setState({ renameHistory: settings })
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.enterFunction, false)
@@ -85,10 +94,15 @@ class RenameLayers extends React.Component {
     }
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     this.props.selection.items.forEach((item, index) => {
       item.name = this.doRename(item, index)
     })
+
+    // History
+    const historyArr = History.createArr(this.state.valueAttr, this.state.renameHistory)
+    await History.set(this.history.getCurrentKey(), historyArr)
+
     this.props.dialog.close()
   }
 
@@ -117,8 +131,6 @@ class RenameLayers extends React.Component {
       { id: "parentName", char: "%o", text: "Parent Name" },
     ]
 
-    const options = ["one", "two two teo", "three"]
-
     const listItems = buttons.map((b) => (
       <li key={b.id} className="keywordBtn">
         <button
@@ -143,10 +155,11 @@ class RenameLayers extends React.Component {
             value={this.state.valueAttr}
             onChange={this.onNameInputChange}
           />
+
           <HistoryDropdown
             dropdownId="nameDD"
-            handleHistory={this.handleHistory.bind(this)}
-            menuData={options}
+            handleHistory={this.handleHistory}
+            menuData={this.state.renameHistory}
           />
         </div>
         <div className="inputWrapper sequenceInput">
