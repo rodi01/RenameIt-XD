@@ -6,6 +6,10 @@ h1 + div {
   padding-top: 24px;
 }
 
+.mt24 {
+  margin-top: 24px;
+}
+
 h3 {
   font-size: 11px;
   color: #707070;
@@ -91,11 +95,6 @@ h3 {
   border-radius: 3px;
   width: 34px;
   height: 24px;
-
-  &:hover {
-    background-color: #ffffff;
-    border-color: #c9c9c9;
-  }
 }
 
 .error {

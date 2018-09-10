@@ -8,6 +8,8 @@
 const React = require("react")
 const Rename = require("./lib/Rename.js")
 const Preview = require("./Preview.jsx")
+const isBlank = require("is-blank")
+const isNumber = require("is-number")
 const style = require("./styles.scss")
 
 class RenameLayers extends React.Component {
@@ -18,6 +20,7 @@ class RenameLayers extends React.Component {
       sequence: 1,
       previewData: [],
       showError: "",
+      disableButton: "true",
     }
 
     this.onNameInputChange = this.onNameInputChange.bind(this)
@@ -54,9 +57,7 @@ class RenameLayers extends React.Component {
   }
 
   onSequenceInputChange(e) {
-    const re = /^[0-9\b]+$/
-
-    if (e.target.value == "" || re.test(e.target.value)) {
+    if (e.target.value == "" || isNumber(e.target.value)) {
       this.setState(
         {
           sequence: e.target.value,
@@ -81,6 +82,10 @@ class RenameLayers extends React.Component {
       renamed.push(this.doRename(item, index))
     })
     this.setState({ previewData: renamed })
+
+    this.setState({
+      disableButton: !isBlank(this.state.valueAttr) && isNumber(this.state.sequence) ? "" : "true",
+    })
   }
 
   enterFunction(e) {
@@ -91,9 +96,13 @@ class RenameLayers extends React.Component {
   }
 
   onSubmit(e) {
-    this.props.selection.items.forEach((item, index) => {
-      item.name = this.doRename(item, index)
-    })
+    if (!isBlank(this.state.valueAttr) && isNumber(this.state.sequence)) {
+      this.props.selection.items.forEach((item, index) => {
+        item.name = this.doRename(item, index)
+      })
+    } else if (!isNumber(this.state.sequence)) {
+      return
+    }
     this.props.dialog.close()
   }
 
@@ -170,7 +179,12 @@ class RenameLayers extends React.Component {
           <button type="submit" uxp-variant="secondary" onClick={this.onCancelClick}>
             Cancel
           </button>
-          <button type="submit" uxp-variant="cta" onClick={this.onSubmit}>
+          <button
+            type="submit"
+            uxp-variant="cta"
+            disabled={this.state.disableButton}
+            onClick={this.onSubmit}
+          >
             Rename
           </button>
         </footer>

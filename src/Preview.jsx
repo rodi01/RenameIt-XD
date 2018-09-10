@@ -6,6 +6,7 @@
  */
 
 const React = require("react")
+const isBlank = require("is-blank")
 
 class Preview extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class Preview extends React.Component {
   }
 
   renderPreviewText() {
-    if (this.state.preview === "") {
+    if (isBlank(this.state.preview)) {
       return <span>&nbsp;</span>
     } else {
       return `Preview: ${this.state.preview}`
