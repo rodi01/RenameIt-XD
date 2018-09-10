@@ -186,7 +186,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "h1 + div {\n  margin-top: 16px; }\n\n#keywordsSection {\n  padding-top: 24px; }\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em; }\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px; }\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px; }\n  .keywordBtn button {\n    margin: 0; }\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n  .inputWrapper input[type=\"text\"] {\n    flex: 1 1; }\n  .inputWrapper label {\n    flex-shrink: 0;\n    width: 70px; }\n\n.sequenceInput input {\n  width: 60px; }\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: block;\n  height: 32px;\n  overflow: hidden; }\n  #preview strong {\n    font-weight: bold; }\n\n.findReplace .inputWrapper label {\n  width: 90px; }\n\n.caseSesitiveWrapper {\n  padding-top: 8px; }\n\n.dropdown {\n  position: relative;\n  z-index: 998;\n  width: 34px; }\n  .dropdown.opened .historyIcon {\n    background-color: #e4e4e4;\n    border-color: #c9c9c9; }\n\n.historyIcon {\n  background-color: #fafafa;\n  border: #e4e4e4 1px solid;\n  border-radius: 3px;\n  width: 34px;\n  height: 24px; }\n  .historyIcon:hover {\n    background-color: #ffffff;\n    border-color: #c9c9c9; }\n\n.error {\n  color: #f44b60;\n  font-size: 11px;\n  visibility: hidden; }\n  .error.show {\n    visibility: visible; }\n", ""]);
+exports.push([module.i, "h1 + div {\n  margin-top: 16px; }\n\n#keywordsSection {\n  padding-top: 24px; }\n\n.mt24 {\n  margin-top: 24px; }\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em; }\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px; }\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px; }\n  .keywordBtn button {\n    margin: 0; }\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n  .inputWrapper input[type=\"text\"] {\n    flex: 1 1; }\n  .inputWrapper label {\n    flex-shrink: 0;\n    width: 70px; }\n\n.sequenceInput input {\n  width: 60px; }\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: block;\n  height: 32px;\n  overflow: hidden; }\n  #preview strong {\n    font-weight: bold; }\n\n.findReplace .inputWrapper label {\n  width: 90px; }\n\n.caseSesitiveWrapper {\n  padding-top: 8px; }\n\n.dropdown {\n  position: relative;\n  z-index: 998;\n  width: 34px; }\n  .dropdown.opened .historyIcon {\n    background-color: #e4e4e4;\n    border-color: #c9c9c9; }\n\n.historyIcon {\n  background-color: #fafafa;\n  border: #e4e4e4 1px solid;\n  border-radius: 3px;\n  width: 34px;\n  height: 24px; }\n\n.error {\n  color: #f44b60;\n  font-size: 11px;\n  visibility: hidden; }\n  .error.show {\n    visibility: visible; }\n", ""]);
 
 // exports
 
@@ -998,6 +998,117 @@ module.exports = function (value, locale) {
 
 /***/ }),
 
+/***/ "./node_modules/is-blank/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/is-blank/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isEmpty = __webpack_require__(/*! is-empty */ "./node_modules/is-empty/lib/index.js")
+var isWhitespace = __webpack_require__(/*! is-whitespace */ "./node_modules/is-whitespace/index.js")
+
+function isString (object) {
+  return typeof object === 'string'
+}
+
+module.exports = function (object) {
+  return isString(object) && object.length ? isWhitespace(object) : isEmpty(object)
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/is-empty/lib/index.js":
+/*!********************************************!*\
+  !*** ./node_modules/is-empty/lib/index.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+/**
+ * Has own property.
+ *
+ * @type {Function}
+ */
+
+var has = Object.prototype.hasOwnProperty
+
+/**
+ * To string.
+ *
+ * @type {Function}
+ */
+
+var toString = Object.prototype.toString
+
+/**
+ * Test whether a value is "empty".
+ *
+ * @param {Mixed} val
+ * @return {Boolean}
+ */
+
+function isEmpty(val) {
+  // Null and Undefined...
+  if (val == null) return true
+
+  // Booleans...
+  if ('boolean' == typeof val) return false
+
+  // Numbers...
+  if ('number' == typeof val) return val === 0
+
+  // Strings...
+  if ('string' == typeof val) return val.length === 0
+
+  // Functions...
+  if ('function' == typeof val) return val.length === 0
+
+  // Arrays...
+  if (Array.isArray(val)) return val.length === 0
+
+  // Errors...
+  if (val instanceof Error) return val.message === ''
+
+  // Objects...
+  if (val.toString == toString) {
+    switch (val.toString()) {
+
+      // Maps, Sets, Files and Errors...
+      case '[object File]':
+      case '[object Map]':
+      case '[object Set]': {
+        return val.size === 0
+      }
+
+      // Plain objects...
+      case '[object Object]': {
+        for (var key in val) {
+          if (has.call(val, key)) return false
+        }
+
+        return true
+      }
+    }
+  }
+
+  // Anything else...
+  return false
+}
+
+/**
+ * Export `isEmpty`.
+ *
+ * @type {Function}
+ */
+
+module.exports = isEmpty
+
+
+/***/ }),
+
 /***/ "./node_modules/is-lower-case/is-lower-case.js":
 /*!*****************************************************!*\
   !*** ./node_modules/is-lower-case/is-lower-case.js ***!
@@ -1021,6 +1132,36 @@ module.exports = function (string, locale) {
 
 /***/ }),
 
+/***/ "./node_modules/is-number/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/is-number/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*!
+ * is-number <https://github.com/jonschlinkert/is-number>
+ *
+ * Copyright (c) 2014-present, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+
+
+module.exports = function(num) {
+  if (typeof num === 'number') {
+    return num - num === 0;
+  }
+  if (typeof num === 'string' && num.trim() !== '') {
+    return Number.isFinite ? Number.isFinite(+num) : isFinite(+num);
+  }
+  return false;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/is-upper-case/is-upper-case.js":
 /*!*****************************************************!*\
   !*** ./node_modules/is-upper-case/is-upper-case.js ***!
@@ -1039,6 +1180,37 @@ var upperCase = __webpack_require__(/*! upper-case */ "./node_modules/upper-case
  */
 module.exports = function (string, locale) {
   return upperCase(string, locale) === string
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/is-whitespace/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/is-whitespace/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*!
+ * is-whitespace <https://github.com/jonschlinkert/is-whitespace>
+ *
+ * Copyright (c) 2014-2015, Jon Schlinkert.
+ * Licensed under the MIT License.
+ */
+
+
+
+var cache;
+
+module.exports = function isWhitespace(str) {
+  return (typeof str === 'string') && regex().test(str);
+};
+
+function regex() {
+  // ensure that runtime compilation only happens once
+  return cache || (cache = new RegExp('^[\\s\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF"]+$'));
 }
 
 
@@ -21685,7 +21857,7 @@ class NoSelection extends React.Component {
   render() {
     return React.createElement(
       "form",
-      { method: "dialog", style: { width: 250 } },
+      { method: "dialog", style: { width: 300 } },
       React.createElement(
         "h1",
         null,
@@ -21698,11 +21870,11 @@ class NoSelection extends React.Component {
       ),
       React.createElement(
         "footer",
-        null,
+        { className: "mt24" },
         React.createElement(
           "button",
           { type: "submit", "uxp-variant": "cta", onClick: this.onOKClick },
-          "OK"
+          "Close"
         )
       )
     );
@@ -21728,6 +21900,7 @@ module.exports = NoSelection;
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const isBlank = __webpack_require__(/*! is-blank */ "./node_modules/is-blank/index.js");
 
 class Preview extends React.Component {
   constructor(props) {
@@ -21744,7 +21917,7 @@ class Preview extends React.Component {
   }
 
   renderPreviewText() {
-    if (this.state.preview === "") {
+    if (isBlank(this.state.preview)) {
       return React.createElement(
         "span",
         null,
@@ -21784,6 +21957,8 @@ module.exports = Preview;
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const Rename = __webpack_require__(/*! ./lib/Rename.js */ "./src/lib/Rename.js");
 const Preview = __webpack_require__(/*! ./Preview.jsx */ "./src/Preview.jsx");
+const isBlank = __webpack_require__(/*! is-blank */ "./node_modules/is-blank/index.js");
+const isNumber = __webpack_require__(/*! is-number */ "./node_modules/is-number/index.js");
 const style = __webpack_require__(/*! ./styles.scss */ "./src/styles.scss");
 
 class RenameLayers extends React.Component {
@@ -21793,7 +21968,8 @@ class RenameLayers extends React.Component {
       valueAttr: "",
       sequence: 1,
       previewData: [],
-      showError: ""
+      showError: "",
+      disableButton: "true"
     };
 
     this.onNameInputChange = this.onNameInputChange.bind(this);
@@ -21830,9 +22006,7 @@ class RenameLayers extends React.Component {
   }
 
   onSequenceInputChange(e) {
-    const re = /^[0-9\b]+$/;
-
-    if (e.target.value == "" || re.test(e.target.value)) {
+    if (e.target.value == "" || isNumber(e.target.value)) {
       this.setState({
         sequence: e.target.value,
         showError: ""
@@ -21851,6 +22025,10 @@ class RenameLayers extends React.Component {
       renamed.push(this.doRename(item, index));
     });
     this.setState({ previewData: renamed });
+
+    this.setState({
+      disableButton: !isBlank(this.state.valueAttr) && isNumber(this.state.sequence) ? "" : "true"
+    });
   }
 
   enterFunction(e) {
@@ -21861,9 +22039,13 @@ class RenameLayers extends React.Component {
   }
 
   onSubmit(e) {
-    this.props.selection.items.forEach((item, index) => {
-      item.name = this.doRename(item, index);
-    });
+    if (!isBlank(this.state.valueAttr) && isNumber(this.state.sequence)) {
+      this.props.selection.items.forEach((item, index) => {
+        item.name = this.doRename(item, index);
+      });
+    } else if (!isNumber(this.state.sequence)) {
+      return;
+    }
     this.props.dialog.close();
   }
 
@@ -21967,7 +22149,12 @@ class RenameLayers extends React.Component {
         ),
         React.createElement(
           "button",
-          { type: "submit", "uxp-variant": "cta", onClick: this.onSubmit },
+          {
+            type: "submit",
+            "uxp-variant": "cta",
+            disabled: this.state.disableButton,
+            onClick: this.onSubmit
+          },
           "Rename"
         )
       )

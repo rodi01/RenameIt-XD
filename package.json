@@ -23,6 +23,8 @@
   },
   "devDependencies": {
     "eslint-config-airbnb": "^17.0.0",
+    "is-blank": "^2.1.0",
+    "is-number": "^7.0.0",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0"
   }
