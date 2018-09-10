@@ -19,12 +19,12 @@ class NoSelection extends React.Component {
 
   render() {
     return (
-      <form method="dialog" style={{ width: 250 }}>
+      <form method="dialog" style={{ width: 300 }}>
         <h1>Uh Oh!</h1>
         <p>You need to select at least one artboard or layer.</p>
-        <footer>
+        <footer className="mt24">
           <button type="submit" uxp-variant="cta" onClick={this.onOKClick}>
-            OK
+            Close
           </button>
         </footer>
       </form>
