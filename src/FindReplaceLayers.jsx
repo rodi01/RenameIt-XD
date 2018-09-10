@@ -2,13 +2,13 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-26 11:42:19
+ * @Last Modified time: 2018-09-07 08:32:53
  */
 
 const React = require("react")
 const FindReplace = require("./lib/FindReplace.js")
 const Preview = require("./Preview.jsx")
-const style = require("./styles.css")
+const style = require("./styles.scss")
 
 class FindReplaceLayers extends React.Component {
   constructor(props) {
@@ -98,7 +98,7 @@ class FindReplaceLayers extends React.Component {
 
   render() {
     return (
-      <form className="findReplace" method="dialog" style={{ width: 320, height: 224 }}>
+      <form className="findReplace" method="dialog" style={{ width: 320 }}>
         <h1>Find & Replace Selected Layers</h1>
         <div className="inputWrapper">
           <label>Find</label>

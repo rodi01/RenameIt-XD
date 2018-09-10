@@ -1,0 +1,109 @@
+h1 + div {
+  margin-top: 16px;
+}
+
+#keywordsSection {
+  padding-top: 24px;
+}
+
+h3 {
+  font-size: 11px;
+  color: #707070;
+  font-weight: normal;
+  letter-spacing: 1.3em;
+}
+
+.keywords {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
+  padding-top: 8px;
+  margin-left: -6px;
+}
+
+.keywordBtn {
+  display: block;
+  padding: 0;
+  margin: 6px;
+
+  button {
+    margin: 0;
+  }
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  input[type="text"] {
+    flex: 1 1;
+  }
+
+  label {
+    flex-shrink: 0;
+    width: 70px;
+  }
+}
+
+.sequenceInput {
+  input {
+    width: 60px;
+  }
+}
+
+#preview {
+  margin-top: 16px;
+  color: #333;
+  display: block;
+  height: 32px;
+  overflow: hidden;
+  strong {
+    font-weight: bold;
+  }
+}
+
+.findReplace .inputWrapper label {
+  width: 90px;
+}
+
+.caseSesitiveWrapper {
+  padding-top: 8px;
+}
+
+.dropdown {
+  position: relative;
+  z-index: 998;
+  width: 34px;
+
+  &.opened {
+    .historyIcon {
+      background-color: #e4e4e4;
+      border-color: #c9c9c9;
+    }
+  }
+}
+
+.historyIcon {
+  background-color: #fafafa;
+  border: #e4e4e4 1px solid;
+  border-radius: 3px;
+  width: 34px;
+  height: 24px;
+
+  &:hover {
+    background-color: #ffffff;
+    border-color: #c9c9c9;
+  }
+}
+
+.error {
+  color: #f44b60;
+  font-size: 11px;
+  visibility: hidden;
+
+  &.show {
+    visibility: visible;
+  }
+}

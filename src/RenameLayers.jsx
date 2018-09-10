@@ -2,13 +2,13 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-24 21:49:55
+ * @Last Modified time: 2018-09-09 18:08:00
  */
 
 const React = require("react")
 const Rename = require("./lib/Rename.js")
 const Preview = require("./Preview.jsx")
-const style = require("./styles.css")
+const style = require("./styles.scss")
 
 class RenameLayers extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class RenameLayers extends React.Component {
       valueAttr: "",
       sequence: 1,
       previewData: [],
+      showError: "",
     }
     this.onNameInputChange = this.onNameInputChange.bind(this)
     this.onSequenceInputChange = this.onSequenceInputChange.bind(this)
@@ -51,13 +52,30 @@ class RenameLayers extends React.Component {
     this.setState({ valueAttr: e.target.value }, () => this.previewUpdate())
   }
 
+  isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n)
+  }
+
   onSequenceInputChange(e) {
-    this.setState(
-      {
-        sequence: e.target.value,
-      },
-      () => this.previewUpdate()
-    )
+    const re = /^[0-9\b]+$/
+
+    if (e.target.value == "" || re.test(e.target.value)) {
+      this.setState(
+        {
+          sequence: e.target.value,
+          showError: "",
+        },
+        () => this.previewUpdate()
+      )
+    } else {
+      this.setState(
+        {
+          sequence: e.target.value,
+          showError: "show",
+        },
+        () => this.previewUpdate()
+      )
+    }
   }
 
   previewUpdate() {
@@ -120,7 +138,7 @@ class RenameLayers extends React.Component {
       </li>
     ))
     return (
-      <form method="dialog" style={{ width: 320, height: 350 }}>
+      <form method="dialog" style={{ width: 320 }}>
         <h1>Rename Selected Layers</h1>
         <div className="inputWrapper">
           <label>Name</label>
@@ -140,6 +158,7 @@ class RenameLayers extends React.Component {
             value={this.state.sequence}
             onChange={this.onSequenceInputChange}
           />
+          <span className={`error ${this.state.showError}`}>&larr; Number is required</span>
         </div>
         <section id="keywordsSection">
           <h3>KEYWORDS</h3>

@@ -14,3 +14,15 @@ v1.1:
   ☐ Search scope
   ☐ Settings
   ☐ Mixpanel
+
+Bugs: 
+  ✔ Allow dialog height to size appropriately (or use scroll areas) @done(18-09-09 17:50)
+  ✔ “Start At” allows non numbers, but they get converted to “N” in the output when using sequences. For alphabetic sequences, I assumed it would allow be to set the starting character, but it only works with numbers. @done(18-09-09 17:51)
+  ✔ Cancelling the dialog throws the following error in the console @done(18-09-09 17:51)
+  ✔ Ensure that error dialogs have a CTA OK button. @done(18-09-09 17:54)
+  ✔ Preview can quickly run out of space, thus obscuring the pattern (Fixed makeing it double the size, two lines) @done(18-09-09 17:58)
+  ✔ Not obvious that “Start At” is expecting a number. (This tests well with current Sketch users, shouldn't be an issue) @done(18-09-09 18:11)
+  ☐ "The buttons feel like they should toggle the field rather than adding more of the same fields on in a row Would suggest checking where the cursor is, but there’s no easy way to do that yet. Possibly add a + button in the keywords buttons?"
+  ✔ Preview can quickly run out of space, thus obscuring the pattern (Fixed with two lines) @done(18-09-09 17:57)
+  ☐ Submenu items should use “...” (they display a dialog) NEEDS MORE INFO
+  ☐ When a keyword is clicked, don’t keep the name field highlighted - users might want to type more custom text without having to click on the name field again.
