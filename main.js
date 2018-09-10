@@ -21778,7 +21778,7 @@ module.exports = Preview;
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-09 18:08:00
+ * @Last Modified time: 2018-09-09 19:08:30
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -21795,6 +21795,7 @@ class RenameLayers extends React.Component {
       previewData: [],
       showError: ""
     };
+
     this.onNameInputChange = this.onNameInputChange.bind(this);
     this.onSequenceInputChange = this.onSequenceInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -21828,10 +21829,6 @@ class RenameLayers extends React.Component {
     this.setState({ valueAttr: e.target.value }, () => this.previewUpdate());
   }
 
-  isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-  }
-
   onSequenceInputChange(e) {
     const re = /^[0-9\b]+$/;
 
@@ -21856,8 +21853,8 @@ class RenameLayers extends React.Component {
     this.setState({ previewData: renamed });
   }
 
-  enterFunction(event) {
-    if (event.keyCode === 13) {
+  enterFunction(e) {
+    if (e.keyCode === 13) {
       // Enter is pressed
       this.onSubmit();
     }
@@ -21874,10 +21871,12 @@ class RenameLayers extends React.Component {
     this.props.dialog.close();
   }
 
-  onButtonClicked(event) {
-    event.preventDefault();
+  onButtonClicked(e) {
+    e.preventDefault();
+    // this.refs.name.selectionStart = this.refs.name.selectionEnd = 0
+
     this.setState({
-      valueAttr: `${this.state.valueAttr}${event.target.getAttribute("data-char")}`
+      valueAttr: `${this.state.valueAttr}${e.target.getAttribute("data-char")}`
     }, () => this.previewUpdate());
   }
 
@@ -21919,7 +21918,8 @@ class RenameLayers extends React.Component {
           id: "name",
           placeholder: "Item %n",
           value: this.state.valueAttr,
-          onChange: this.onNameInputChange
+          onChange: this.onNameInputChange,
+          ref: "name"
         })
       ),
       React.createElement(
