@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-07 15:21:14 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-08 22:27:28
+ * @Last Modified time: 2018-09-09 15:03:42
  */
 
 const React = require("react")
@@ -25,11 +25,7 @@ class Preview extends React.Component {
     if (this.state.preview === "") {
       return <span>&nbsp;</span>
     } else {
-      return (
-        <span>
-          Preview: <strong>{this.state.preview}</strong>
-        </span>
-      )
+      return `Preview: ${this.state.preview}`
     }
   }
   render() {

@@ -1,7 +1,7 @@
 {
   "id": "com.taptap.ninja.renameit",
   "name": "Rename it",
-  "version": "0.0.1",
+  "version": "1.0",
   "host": {
     "app": "XD",
     "minVersion": "10.0.10.24"

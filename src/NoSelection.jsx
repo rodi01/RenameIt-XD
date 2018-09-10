@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-11 22:14:31 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-08-11 23:00:24
+ * @Last Modified time: 2018-09-07 08:35:20
  */
 
 const React = require("react")
@@ -23,7 +23,7 @@ class NoSelection extends React.Component {
         <h1>Uh Oh!</h1>
         <p>You need to select at least one artboard or layer.</p>
         <footer>
-          <button type="submit" uxp-variant="primary" onClick={this.onOKClick}>
+          <button type="submit" uxp-variant="cta" onClick={this.onOKClick}>
             OK
           </button>
         </footer>
