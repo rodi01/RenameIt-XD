@@ -21951,7 +21951,7 @@ module.exports = Preview;
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-09 19:08:30
+ * @Last Modified time: 2018-09-10 19:25:05
  */
 
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -22034,6 +22034,7 @@ class RenameLayers extends React.Component {
   enterFunction(e) {
     if (e.keyCode === 13) {
       // Enter is pressed
+      e.preventDefault();
       this.onSubmit();
     }
   }
@@ -22043,10 +22044,10 @@ class RenameLayers extends React.Component {
       this.props.selection.items.forEach((item, index) => {
         item.name = this.doRename(item, index);
       });
-    } else if (!isNumber(this.state.sequence)) {
+      this.props.dialog.close();
+    } else {
       return;
     }
-    this.props.dialog.close();
   }
 
   onCancelClick(e) {
@@ -22055,7 +22056,6 @@ class RenameLayers extends React.Component {
 
   onButtonClicked(e) {
     e.preventDefault();
-    // this.refs.name.selectionStart = this.refs.name.selectionEnd = 0
 
     this.setState({
       valueAttr: `${this.state.valueAttr}${e.target.getAttribute("data-char")}`
