@@ -1,4 +1,8 @@
-h1 + div {
+h1 {
+  padding-left: 0;
+  margin-left: 0;
+}
+hr + div {
   margin-top: 16px;
 }
 

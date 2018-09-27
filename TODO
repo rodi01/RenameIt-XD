@@ -3,11 +3,10 @@ V1.0:
 	- Menu @done
 	- Find and Replace @done
 	- Bump version before final release @due @done
-	- Keyboard Shorctuts @priority(0)  
+	- Keyboard Shorctuts @priority(0)  @done
 			Wating for new relase
 	- Readme @priority(1) @due(2018-09-14) @done
 	- Update Website @priority(1) @due(2018-09-30)
-	- History  
 	- Video Tutorial @priority(3)
 	- Blog Post  @priority(3)
 	
@@ -24,6 +23,7 @@ V1.0:
 		- When a keyword is clicked, don’t keep the name field highlighted - users might want to type more custom text without having to click on the name field again.
 
 V 1.1:
+	- History  
 	- Dedicated Rename Artboard Menu
 	- Search scope
 	- Settings

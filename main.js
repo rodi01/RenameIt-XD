@@ -186,7 +186,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "h1 + div {\n  margin-top: 16px; }\n\n#keywordsSection {\n  padding-top: 24px; }\n\n.mt24 {\n  margin-top: 24px; }\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em; }\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px; }\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px; }\n  .keywordBtn button {\n    margin: 0; }\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n  .inputWrapper input[type=\"text\"] {\n    flex: 1 1; }\n  .inputWrapper label {\n    flex-shrink: 0;\n    width: 70px; }\n\n.sequenceInput input {\n  width: 60px; }\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: block;\n  height: 32px;\n  overflow: hidden; }\n  #preview strong {\n    font-weight: bold; }\n\n.findReplace .inputWrapper label {\n  width: 90px; }\n\n.caseSesitiveWrapper {\n  padding-top: 8px; }\n\n.dropdown {\n  position: relative;\n  z-index: 998;\n  width: 34px; }\n  .dropdown.opened .historyIcon {\n    background-color: #e4e4e4;\n    border-color: #c9c9c9; }\n\n.historyIcon {\n  background-color: #fafafa;\n  border: #e4e4e4 1px solid;\n  border-radius: 3px;\n  width: 34px;\n  height: 24px; }\n\n.error {\n  color: #f44b60;\n  font-size: 11px;\n  visibility: hidden; }\n  .error.show {\n    visibility: visible; }\n", ""]);
+exports.push([module.i, "h1 {\n  padding-left: 0;\n  margin-left: 0; }\n\nhr + div {\n  margin-top: 16px; }\n\n#keywordsSection {\n  padding-top: 24px; }\n\n.mt24 {\n  margin-top: 24px; }\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1.3em; }\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px;\n  margin-left: -6px; }\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px; }\n  .keywordBtn button {\n    margin: 0; }\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n  .inputWrapper input[type=\"text\"] {\n    flex: 1 1; }\n  .inputWrapper label {\n    flex-shrink: 0;\n    width: 70px; }\n\n.sequenceInput input {\n  width: 60px; }\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: block;\n  height: 32px;\n  overflow: hidden; }\n  #preview strong {\n    font-weight: bold; }\n\n.findReplace .inputWrapper label {\n  width: 90px; }\n\n.caseSesitiveWrapper {\n  padding-top: 8px; }\n\n.dropdown {\n  position: relative;\n  z-index: 998;\n  width: 34px; }\n  .dropdown.opened .historyIcon {\n    background-color: #e4e4e4;\n    border-color: #c9c9c9; }\n\n.historyIcon {\n  background-color: #fafafa;\n  border: #e4e4e4 1px solid;\n  border-radius: 3px;\n  width: 34px;\n  height: 24px; }\n\n.error {\n  color: #f44b60;\n  font-size: 11px;\n  visibility: hidden; }\n  .error.show {\n    visibility: visible; }\n", ""]);
 
 // exports
 
@@ -21760,6 +21760,7 @@ class FindReplaceLayers extends React.Component {
         null,
         "Find & Replace Selected Layers"
       ),
+      React.createElement("hr", null),
       React.createElement(
         "div",
         { className: "inputWrapper" },
@@ -22087,6 +22088,7 @@ class RenameLayers extends React.Component {
         null,
         "Rename Selected Layers"
       ),
+      React.createElement("hr", null),
       React.createElement(
         "div",
         { className: "inputWrapper" },
