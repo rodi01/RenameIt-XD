@@ -148,6 +148,7 @@ class RenameLayers extends React.Component {
     return (
       <form method="dialog" style={{ width: 320 }}>
         <h1>Rename Selected Layers</h1>
+        <hr />
         <div className="inputWrapper">
           <label>Name</label>
           <input

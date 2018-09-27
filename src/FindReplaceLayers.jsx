@@ -100,6 +100,7 @@ class FindReplaceLayers extends React.Component {
     return (
       <form className="findReplace" method="dialog" style={{ width: 320 }}>
         <h1>Find & Replace Selected Layers</h1>
+        <hr />
         <div className="inputWrapper">
           <label>Find</label>
           <input
