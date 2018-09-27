@@ -14,12 +14,20 @@
         {
           "type": "menu",
           "label": "Rename Selected Layers",
-          "commandId": "renameCommand"
+          "commandId": "renameCommand",
+          "shortcut": {
+            "mac": "Ctrl+Alt+R",
+            "win": "Ctrl+Alt+R"
+          }
         },
         {
           "type": "menu",
           "label": "Find & Replace Selected Layers",
-          "commandId": "findReplaceCommand"
+          "commandId": "findReplaceCommand",
+          "shortcut": {
+            "mac": "Ctrl+Option+Cmd+R",
+            "win": "Shift+Ctrl+Alt+R"
+          }
         }
       ]
     }
