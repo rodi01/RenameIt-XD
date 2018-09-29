@@ -1,6 +1,6 @@
 {
   "name": "rename-it",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "main.js",
   "private": true,
   "license": "MIT",
@@ -20,7 +20,7 @@
   "scripts": {
     "watch": "nodemon -w src -e js,jsx,scss -w webpack.config.js -x yarn build",
     "build": "webpack --mode development",
-    "build-prod": "webpack --mode production"
+    "build:prod": "webpack --mode production"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^17.0.0",

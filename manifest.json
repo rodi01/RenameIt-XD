@@ -2,6 +2,14 @@
   "id": "com.taptap.ninja.renameit",
   "name": "Rename it",
   "version": "1.0",
+  "description": "Keep your Adobe XD files organized, batch rename layers and artboards.",
+  "icons": [
+    {
+      "width": 96,
+      "height": 96,
+      "path": "images/icon.png"
+    }
+  ],
   "host": {
     "app": "XD",
     "minVersion": "10.0.10.24"
