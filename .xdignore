@@ -1,0 +1,12 @@
+package.json
+TODO
+Rename-It-XD.code-workspace
+webpack.config.js
+/src
+.eslintrc.json
+.git
+.gitignore
+.xdignore
+icon_512.png
+*.lock
+.vscode
