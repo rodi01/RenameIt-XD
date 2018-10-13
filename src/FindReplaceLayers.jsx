@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-23 16:54:26
+ * @Last Modified time: 2018-10-12 22:22:26
  */
 
 const React = require("react")
@@ -19,6 +19,8 @@ class FindReplaceLayers extends React.Component {
       caseSensitive: false,
       previewData: [],
     }
+
+    this.isSubmiting = false
     this.onFindInputChange = this.onFindInputChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onCancelClick = this.onCancelClick.bind(this)
@@ -82,13 +84,17 @@ class FindReplaceLayers extends React.Component {
   }
 
   onSubmit(e) {
+    if (this.isSubmiting) return
+    this.isSubmiting = true
     this.props.selection.items.forEach((item) => {
       const name = this.doRename(item)
+
       if (name) {
         item.name = name
       }
     })
 
+    document.removeEventListener("keydown", this.enterFunction, false)
     this.props.dialog.close()
   }
 
