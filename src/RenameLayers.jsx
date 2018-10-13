@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-10 19:25:05
+ * @Last Modified time: 2018-10-12 22:03:28
  */
 
 const React = require("react")
@@ -23,6 +23,7 @@ class RenameLayers extends React.Component {
       disableButton: "true",
     }
 
+    this.isSubmitting = false
     this.onNameInputChange = this.onNameInputChange.bind(this)
     this.onSequenceInputChange = this.onSequenceInputChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
@@ -97,10 +98,12 @@ class RenameLayers extends React.Component {
   }
 
   onSubmit(e) {
-    if (!isBlank(this.state.valueAttr) && isNumber(this.state.sequence)) {
+    if (!isBlank(this.state.valueAttr) && isNumber(this.state.sequence) && !this.isSubmiting) {
+      this.isSubmiting = true
       this.props.selection.items.forEach((item, index) => {
         item.name = this.doRename(item, index)
       })
+      document.removeEventListener("keydown", this.enterFunction, false)
       this.props.dialog.close()
     } else {
       return
