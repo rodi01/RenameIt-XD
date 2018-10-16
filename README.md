@@ -74,6 +74,6 @@ You can use both commands **Rename Selected Layers** and **Find & Replace in Sel
 
 Rename It is maintained by Rodrigo Soares, follow me [@rodi01](https://twitter.com/rodi01)
 
-[Checkout the website for more](http://rodi01.github.io/RenameIt/)
+[Checkout the website for more](https://renameit.design/xd)
 
 MIT License © Rodrigo Soares.
