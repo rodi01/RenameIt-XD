@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-11 21:39:15 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-10-12 22:06:05
+ * @Last Modified time: 2018-11-04 20:22:29
  */
 
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
@@ -13,9 +13,9 @@ global.clearTimeout = function() {}
 
 const React = require("react")
 const ReactDOM = require("react-dom")
-const RenameLayers = require("./RenameLayers.jsx")
-const FindReplace = require("./FindReplaceLayers.jsx")
-const NoSelection = require("./NoSelection.jsx")
+const RenameLayers = require("./RenameLayers.jsx").default
+const FindReplace = require("./FindReplaceLayers.jsx").default
+const NoSelection = require("./NoSelection.jsx").default
 
 const whereTo = {
   RENAME: 0,
@@ -24,14 +24,17 @@ const whereTo = {
 }
 
 let dialog
-function showDialog(selection, to) {
+function showDialog(selection, to, documentRoot) {
   const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null
 
   if (dialog == null) {
     dialog = document.createElement("dialog")
     switch (where) {
       case whereTo.RENAME:
-        ReactDOM.render(<RenameLayers dialog={dialog} selection={selection} />, dialog)
+        ReactDOM.render(
+          <RenameLayers dialog={dialog} selection={selection} documentRoot={documentRoot} />,
+          dialog
+        )
         break
 
       case whereTo.FIND:
@@ -57,8 +60,8 @@ function showDialog(selection, to) {
 
 module.exports = {
   commands: {
-    renameCommand: function(selection) {
-      return showDialog(selection, whereTo.RENAME).catch((err) => {
+    renameCommand: function(selection, documentRoot) {
+      return showDialog(selection, whereTo.RENAME, documentRoot).catch((err) => {
         return
       })
     },
