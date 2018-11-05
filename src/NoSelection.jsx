@@ -2,10 +2,10 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-11 22:14:31 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-07 08:35:20
+ * @Last Modified time: 2018-11-04 20:22:27
  */
 
-const React = require("react")
+import React from "react"
 
 class NoSelection extends React.Component {
   constructor(props) {
@@ -32,4 +32,4 @@ class NoSelection extends React.Component {
   }
 }
 
-module.exports = NoSelection
+export default NoSelection

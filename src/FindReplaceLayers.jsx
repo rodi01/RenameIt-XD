@@ -2,13 +2,13 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-10-12 22:22:26
+ * @Last Modified time: 2018-11-04 20:22:16
  */
 
-const React = require("react")
-const FindReplace = require("./lib/FindReplace.js")
-const Preview = require("./Preview.jsx")
-const style = require("./styles.scss")
+import React from "react"
+import { matchString, findReplace } from "./lib/FindReplace.js"
+import Preview from "./Preview.jsx"
+import style from "./styles.scss"
 
 class FindReplaceLayers extends React.Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class FindReplaceLayers extends React.Component {
       caseSensitive: this.state.caseSensitive,
     }
 
-    return FindReplace.matchString(opts) ? FindReplace.findReplace(opts) : false
+    return matchString(opts) ? findReplace(opts) : false
   }
 
   onFindInputChange(e) {
@@ -151,4 +151,4 @@ class FindReplaceLayers extends React.Component {
   }
 }
 
-module.exports = FindReplaceLayers
+export default FindReplaceLayers

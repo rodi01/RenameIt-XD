@@ -2,15 +2,15 @@
  * @Author: Rodrigo Soares 
  * @Date: 2018-08-08 22:28:53 
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-10-12 22:03:28
+ * @Last Modified time: 2018-11-04 20:27:06
  */
 
-const React = require("react")
-const Rename = require("./lib/Rename.js")
-const Preview = require("./Preview.jsx")
-const isBlank = require("is-blank")
-const isNumber = require("is-number")
-const style = require("./styles.scss")
+import React from "react"
+import isBlank from "is-blank"
+import isNumber from "is-number"
+import { rename } from "./lib/Rename.js"
+import Preview from "./Preview.jsx"
+import style from "./styles.scss"
 
 class RenameLayers extends React.Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class RenameLayers extends React.Component {
     }
 
     this.isSubmitting = false
+    this.reorderedSelection = this.reorderSelection()
     this.onNameInputChange = this.onNameInputChange.bind(this)
     this.onSequenceInputChange = this.onSequenceInputChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
@@ -39,6 +40,25 @@ class RenameLayers extends React.Component {
     document.removeEventListener("keydown", this.enterFunction, false)
   }
 
+  reorderSelection() {
+    const firstParent = this.props.selection.items[0].parent
+    const sameParent = this.props.selection.items.every(
+      (elem) => elem.parent.guid === firstParent.guid
+    )
+    if (sameParent) {
+      const arr = []
+      firstParent.children.forEach((child) => {
+        if (this.props.selection.items.includes(child)) {
+          arr.push(child)
+        }
+      })
+
+      return arr
+    } else {
+      return this.props.selection.items
+    }
+  }
+
   doRename(item, index) {
     const options = {
       layerName: item.name,
@@ -50,7 +70,7 @@ class RenameLayers extends React.Component {
       startsFrom: Number(this.state.sequence),
       parentName: item.parent.name,
     }
-    return Rename.rename(options)
+    return rename(options)
   }
 
   onNameInputChange(e) {
@@ -79,7 +99,7 @@ class RenameLayers extends React.Component {
 
   previewUpdate() {
     let renamed = []
-    this.props.selection.items.forEach((item, index) => {
+    this.reorderedSelection.forEach((item, index) => {
       renamed.push(this.doRename(item, index))
     })
     this.setState({ previewData: renamed })
@@ -100,7 +120,7 @@ class RenameLayers extends React.Component {
   onSubmit(e) {
     if (!isBlank(this.state.valueAttr) && isNumber(this.state.sequence) && !this.isSubmiting) {
       this.isSubmiting = true
-      this.props.selection.items.forEach((item, index) => {
+      this.reorderedSelection.forEach((item, index) => {
         item.name = this.doRename(item, index)
       })
       document.removeEventListener("keydown", this.enterFunction, false)
@@ -197,4 +217,4 @@ class RenameLayers extends React.Component {
   }
 }
 
-module.exports = RenameLayers
+export default RenameLayers
