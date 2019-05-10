@@ -1,12 +1,12 @@
 /*
- * @Author: Rodrigo Soares 
- * @Date: 2018-08-08 22:28:53 
+ * @Author: Rodrigo Soares
+ * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-11-04 20:22:16
+ * @Last Modified time: 2019-05-09 19:33:41
  */
 
 import React from "react"
-import { matchString, findReplace } from "./lib/FindReplace.js"
+import {FindReplace} from "renameitlib";
 import Preview from "./Preview.jsx"
 import style from "./styles.scss"
 
@@ -17,14 +17,23 @@ class FindReplaceLayers extends React.Component {
       findValue: "",
       replaceValue: "",
       caseSensitive: false,
-      previewData: [],
+      previewData: []
     }
 
+    this.findReplace = new FindReplace()
     this.isSubmiting = false
-    this.onFindInputChange = this.onFindInputChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-    this.onCancelClick = this.onCancelClick.bind(this)
-    this.enterFunction = this.enterFunction.bind(this)
+    this.onFindInputChange = this
+      .onFindInputChange
+      .bind(this)
+    this.onSubmit = this
+      .onSubmit
+      .bind(this)
+    this.onCancelClick = this
+      .onCancelClick
+      .bind(this)
+    this.enterFunction = this
+      .enterFunction
+      .bind(this)
   }
 
   componentDidMount() {
@@ -39,41 +48,49 @@ class FindReplaceLayers extends React.Component {
       layerName: item.name,
       findText: this.state.findValue,
       replaceWith: this.state.replaceValue,
-      caseSensitive: this.state.caseSensitive,
+      caseSensitive: this.state.caseSensitive
     }
 
-    return matchString(opts) ? findReplace(opts) : false
+    return this
+      .findReplace
+      .match(opts)
+      ? this
+        .findReplace
+        .layer(opts)
+      : false
   }
 
   onFindInputChange(e) {
     const isFind = e.target.id === "find"
-    this.setState(
-      {
-        findValue: isFind ? e.target.value : this.state.findValue,
-        replaceValue: !isFind ? e.target.value : this.state.replaceValue,
-      },
-      () => this.previewUpdate()
-    )
+    this.setState({
+      findValue: isFind
+        ? e.target.value
+        : this.state.findValue,
+      replaceValue: !isFind
+        ? e.target.value
+        : this.state.replaceValue
+    }, () => this.previewUpdate())
   }
 
   onCaseSensitiveChange() {
-    this.setState(
-      {
-        caseSensitive: !this.state.caseSensitive,
-      },
-      () => this.previewUpdate()
-    )
+    this.setState({
+      caseSensitive: !this.state.caseSensitive
+    }, () => this.previewUpdate())
   }
 
   previewUpdate() {
     const renamed = []
-    this.props.selection.items.forEach((item) => {
-      const name = this.doRename(item)
-      if (name) {
-        renamed.push(name)
-      }
-    })
-    this.setState({ previewData: renamed })
+    this
+      .props
+      .selection
+      .items
+      .forEach((item) => {
+        const name = this.doRename(item)
+        if (name) {
+          renamed.push(name)
+        }
+      })
+    this.setState({previewData: renamed})
   }
 
   enterFunction(event) {
@@ -84,37 +101,52 @@ class FindReplaceLayers extends React.Component {
   }
 
   onSubmit(e) {
-    if (this.isSubmiting) return
+    if (this.isSubmiting) 
+      return
     this.isSubmiting = true
-    this.props.selection.items.forEach((item) => {
-      const name = this.doRename(item)
+    this
+      .props
+      .selection
+      .items
+      .forEach((item) => {
+        const name = this.doRename(item)
 
-      if (name) {
-        item.name = name
-      }
-    })
+        if (name) {
+          item.name = name
+        }
+      })
 
     document.removeEventListener("keydown", this.enterFunction, false)
-    this.props.dialog.close()
+    this
+      .props
+      .dialog
+      .close()
   }
 
   onCancelClick(e) {
-    this.props.dialog.close()
+    this
+      .props
+      .dialog
+      .close()
   }
 
   render() {
     return (
-      <form className="findReplace" method="dialog" style={{ width: 320 }}>
+      <form
+        className="findReplace"
+        method="dialog"
+        style={{
+        width: 320
+      }}>
         <h1>Find & Replace Selected Layers</h1>
-        <hr />
+        <hr/>
         <div className="inputWrapper">
           <label>Find</label>
           <input
             type="text"
             id="find"
             value={this.state.findValue}
-            onChange={this.onFindInputChange}
-          />
+            onChange={this.onFindInputChange}/>
         </div>
 
         <div className="inputWrapper">
@@ -123,8 +155,7 @@ class FindReplaceLayers extends React.Component {
             type="text"
             id="replace"
             value={this.state.replaceValue}
-            onChange={this.onFindInputChange}
-          />
+            onChange={this.onFindInputChange}/>
         </div>
         <div className="inputWrapper caseSesitiveWrapper">
           <label>Case Sensitive</label>
@@ -132,11 +163,10 @@ class FindReplaceLayers extends React.Component {
             type="checkbox"
             id="case"
             defaultChecked={this.state.caseSensitive}
-            ref={(el) => el && (el.onchange = () => this.onCaseSensitiveChange(el))}
-          />
+            ref={(el) => el && (el.onchange = () => this.onCaseSensitiveChange(el))}/>
         </div>
 
-        <Preview data={this.state.previewData} />
+        <Preview data={this.state.previewData}/>
 
         <footer>
           <button type="submit" uxp-variant="secondary" onClick={this.onCancelClick}>
