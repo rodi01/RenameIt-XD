@@ -3,16 +3,38 @@
   "name": "Rename it",
   "version": "1.1.0",
   "description": "Keep your Adobe XD files organized, batch rename layers and artboards.",
+  "summary": "Batch rename layers",
+  "releaseNotes": "Added param case, bug fixes.",
+  "keywords": ["utility", "productivity", "rename", "layers", "automation", "batch"],
+  "languages": ["en"],
+  "website": "https://renameit.design",
+  "helpUrl": "https://renameit.design/xd",
+  "author": "Rodrigo Soares",
   "icons": [
+    {
+      "width": 48,
+      "height": 48,
+      "path": "images/Icon@1x.png"
+    },
     {
       "width": 96,
       "height": 96,
-      "path": "images/icon.png"
+      "path": "images/Icon@2x.png"
+    },
+    {
+      "width": 144,
+      "height": 144,
+      "path": "images/Icon@3x.png"
+    },
+    {
+      "width": 192,
+      "height": 192,
+      "path": "images/Icon@4x.png"
     }
   ],
   "host": {
     "app": "XD",
-    "minVersion": "13.0.0"
+    "minVersion": "13.0"
   },
   "uiEntryPoints": [
     {
