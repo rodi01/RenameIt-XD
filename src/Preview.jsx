@@ -1,8 +1,8 @@
 /*
- * @Author: Rodrigo Soares 
- * @Date: 2018-08-07 15:21:14 
+ * @Author: Rodrigo Soares
+ * @Date: 2018-08-07 15:21:14
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-09-09 15:03:42
+ * @Last Modified time: 2019-05-09 19:34:31
  */
 
 const React = require("react")
@@ -12,13 +12,16 @@ class Preview extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      preview: "",
+      preview: ""
     }
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      preview: nextProps.data.filter((val) => val).join(", "),
+      preview: nextProps
+        .data
+        .filter((val) => val)
+        .join(", ")
     })
   }
 
