@@ -1,6 +1,6 @@
 # Rename it
 
-Keep your Adobe XD files organized, batch rename layers and artboards. [Checkout the website](http://rodi01.github.io/RenameIt/)
+Keep your Adobe XD files organized, batch rename layers and artboards. [Checkout the website](https://renameit.design/xd)
 
 ## Rename Selected Layers
 
