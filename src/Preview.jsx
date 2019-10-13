@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-07 15:21:14
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-05-09 19:34:31
+ * @Last Modified time: 2019-10-12 18:16:51
  */
 
 const React = require("react")
@@ -26,14 +26,21 @@ class Preview extends React.Component {
   }
 
   renderPreviewText() {
-    if (isBlank(this.state.preview)) {
+
+    if (isBlank(this.state.preview) && isBlank(this.props.noMatch)) {
       return <span>&nbsp;</span>
+    } else if (!isBlank(this.props.noMatch)) {
+      return `${this.props.noMatch}`
     } else {
       return `Preview: ${this.state.preview}`
     }
   }
   render() {
-    return <div id="preview">{this.renderPreviewText()}</div>
+    return <div
+      id="preview"
+      className={isBlank(this.props.noMatch)
+      ? ""
+      : "noMatch"}>{this.renderPreviewText()}</div>
   }
 }
 

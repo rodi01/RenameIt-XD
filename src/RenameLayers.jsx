@@ -2,13 +2,13 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-05-09 19:37:08
+ * @Last Modified time: 2019-10-12 18:54:23
  */
 
 import React from "react"
 import isBlank from "is-blank"
 import isNumber from "is-number"
-import {Rename} from "renameitlib";
+import {Rename} from "renameitlib"
 import Preview from "./Preview.jsx"
 import style from "./styles.scss"
 
@@ -20,7 +20,7 @@ class RenameLayers extends React.Component {
       sequence: 1,
       previewData: [],
       showError: "",
-      disableButton: "true"
+      disableButton: true
     }
 
     this.rename = new Rename()
@@ -126,7 +126,7 @@ class RenameLayers extends React.Component {
     this.setState({
       disableButton: !isBlank(this.state.valueAttr) && isNumber(this.state.sequence)
         ? ""
-        : "true"
+        : true
     })
   }
 
@@ -226,7 +226,7 @@ class RenameLayers extends React.Component {
         <h1>Rename Selected Layers</h1>
         <hr/>
         <div className="inputWrapper">
-          <label>Name</label>
+          <span>Name</span>
           <input
             type="text"
             id="name"
@@ -236,7 +236,7 @@ class RenameLayers extends React.Component {
             ref="name"/>
         </div>
         <div className="inputWrapper sequenceInput">
-          <label>Start from</label>
+          <span>Start from</span>
           <input
             type="number"
             id="sequence"
