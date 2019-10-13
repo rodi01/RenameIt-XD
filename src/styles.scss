@@ -49,9 +49,10 @@ h3 {
     flex: 1 1;
   }
 
-  label {
+  span {
     flex-shrink: 0;
     width: 70px;
+    text-align: left;
   }
 }
 
@@ -70,14 +71,20 @@ h3 {
   strong {
     font-weight: bold;
   }
+  &.noMatch {
+    color: #f44b60;
+  }
 }
 
-.findReplace .inputWrapper label {
-  width: 90px;
-}
+// .findReplace .inputWrapper span {
+//   width: 90px;
+// }
 
 .caseSesitiveWrapper {
   padding-top: 8px;
+  span {
+    width: auto;
+  }
 }
 
 .dropdown {

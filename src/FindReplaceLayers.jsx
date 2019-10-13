@@ -2,10 +2,11 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-05-09 19:33:41
+ * @Last Modified time: 2019-10-12 18:39:30
  */
 
 import React from "react"
+import isBlank from "is-blank"
 import {FindReplace} from "renameitlib";
 import Preview from "./Preview.jsx"
 import style from "./styles.scss"
@@ -17,7 +18,9 @@ class FindReplaceLayers extends React.Component {
       findValue: "",
       replaceValue: "",
       caseSensitive: false,
-      previewData: []
+      previewData: [],
+      disableButton: true,
+      noMatch: ""
     }
 
     this.findReplace = new FindReplace()
@@ -90,7 +93,12 @@ class FindReplaceLayers extends React.Component {
           renamed.push(name)
         }
       })
-    this.setState({previewData: renamed})
+    this.setState({
+      previewData: renamed
+    }, () => {
+      this.showNoMatch()
+    })
+
   }
 
   enterFunction(event) {
@@ -130,6 +138,25 @@ class FindReplaceLayers extends React.Component {
       .close()
   }
 
+  showNoMatch() {
+    let noMatchText = ""
+    let disButton = false
+    if (isBlank(this.state.previewData) && !isBlank(this.state.findValue)) {
+      noMatchText = "No match"
+      disButton = true
+    }
+
+    if (isBlank(this.state.findValue)) 
+      disButton = true
+
+    this.setState({noMatch: noMatchText})
+    this.setState({
+      disableButton: !disButton
+        ? ""
+        : true
+    })
+  }
+
   render() {
     return (
       <form
@@ -141,7 +168,7 @@ class FindReplaceLayers extends React.Component {
         <h1>Find & Replace Selected Layers</h1>
         <hr/>
         <div className="inputWrapper">
-          <label>Find</label>
+          <span>Find</span>
           <input
             type="text"
             id="find"
@@ -150,7 +177,7 @@ class FindReplaceLayers extends React.Component {
         </div>
 
         <div className="inputWrapper">
-          <label>Replace</label>
+          <span>Replace</span>
           <input
             type="text"
             id="replace"
@@ -158,7 +185,7 @@ class FindReplaceLayers extends React.Component {
             onChange={this.onFindInputChange}/>
         </div>
         <div className="inputWrapper caseSesitiveWrapper">
-          <label>Case Sensitive</label>
+          <span>Case Sensitive</span>
           <input
             type="checkbox"
             id="case"
@@ -166,13 +193,17 @@ class FindReplaceLayers extends React.Component {
             ref={(el) => el && (el.onchange = () => this.onCaseSensitiveChange(el))}/>
         </div>
 
-        <Preview data={this.state.previewData}/>
+        <Preview data={this.state.previewData} noMatch={this.state.noMatch}/>
 
         <footer>
           <button type="submit" uxp-variant="secondary" onClick={this.onCancelClick}>
             Cancel
           </button>
-          <button type="submit" uxp-variant="cta" onClick={this.onSubmit}>
+          <button
+            type="submit"
+            uxp-variant="cta"
+            onClick={this.onSubmit}
+            disabled={this.state.disableButton}>
             Rename
           </button>
         </footer>
