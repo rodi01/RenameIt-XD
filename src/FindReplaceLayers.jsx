@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-10-12 18:39:30
+ * @Last Modified time: 2019-10-21 11:12:17
  */
 
 import React from "react"
@@ -54,13 +54,15 @@ class FindReplaceLayers extends React.Component {
       caseSensitive: this.state.caseSensitive
     }
 
-    return this
+    const name = this
       .findReplace
       .match(opts)
       ? this
         .findReplace
         .layer(opts)
       : false
+
+    return name
   }
 
   onFindInputChange(e) {
@@ -83,20 +85,24 @@ class FindReplaceLayers extends React.Component {
 
   previewUpdate() {
     const renamed = []
+    let isMatch = true
     this
       .props
       .selection
       .items
       .forEach((item) => {
         const name = this.doRename(item)
-        if (name) {
+        if (name || isBlank(name)) {
           renamed.push(name)
+          isMatch = true
+        } else {
+          isMatch = false
         }
       })
     this.setState({
       previewData: renamed
     }, () => {
-      this.showNoMatch()
+      this.showNoMatch(isMatch)
     })
 
   }
@@ -138,10 +144,10 @@ class FindReplaceLayers extends React.Component {
       .close()
   }
 
-  showNoMatch() {
+  showNoMatch(isMatch) {
     let noMatchText = ""
     let disButton = false
-    if (isBlank(this.state.previewData) && !isBlank(this.state.findValue)) {
+    if (!isMatch && !isBlank(this.state.findValue)) {
       noMatchText = "No match"
       disButton = true
     }

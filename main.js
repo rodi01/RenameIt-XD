@@ -26730,7 +26730,7 @@ __webpack_require__.r(__webpack_exports__);
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-10-12 18:39:30
+ * @Last Modified time: 2019-10-21 11:12:17
  */
 
 
@@ -26774,7 +26774,9 @@ class FindReplaceLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Com
       caseSensitive: this.state.caseSensitive
     };
 
-    return this.findReplace.match(opts) ? this.findReplace.layer(opts) : false;
+    const name = this.findReplace.match(opts) ? this.findReplace.layer(opts) : false;
+
+    return name;
   }
 
   onFindInputChange(e) {
@@ -26793,16 +26795,20 @@ class FindReplaceLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Com
 
   previewUpdate() {
     const renamed = [];
+    let isMatch = true;
     this.props.selection.items.forEach(item => {
       const name = this.doRename(item);
-      if (name) {
+      if (name || is_blank__WEBPACK_IMPORTED_MODULE_1___default()(name)) {
         renamed.push(name);
+        isMatch = true;
+      } else {
+        isMatch = false;
       }
     });
     this.setState({
       previewData: renamed
     }, () => {
-      this.showNoMatch();
+      this.showNoMatch(isMatch);
     });
   }
 
@@ -26832,10 +26838,10 @@ class FindReplaceLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Com
     this.props.dialog.close();
   }
 
-  showNoMatch() {
+  showNoMatch(isMatch) {
     let noMatchText = "";
     let disButton = false;
-    if (is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.state.previewData) && !is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.state.findValue)) {
+    if (!isMatch && !is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.state.findValue)) {
       noMatchText = "No match";
       disButton = true;
     }

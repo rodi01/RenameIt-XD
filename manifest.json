@@ -20,21 +20,6 @@
       "width": 48,
       "height": 48,
       "path": "images/icon_48.png"
-    },
-    {
-      "width": 96,
-      "height": 96,
-      "path": "images/icon_96.png"
-    },
-    {
-      "width": 144,
-      "height": 144,
-      "path": "images/icon_192.png"
-    },
-    {
-      "width": 144,
-      "height": 144,
-      "path": "images/icon_192.png"
     }
   ],
   "host": {
