@@ -5,16 +5,15 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
+    "@rodi01/renameitlib": "^1.2.3",
+    "babel-loader": "^8.1.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "css-loader": "^1.0.0",
-    "node-sass": "^4.9.3",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "renameitlib": "github:rodi01/RenameIt-Lib",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.22.0"
+    "css-loader": "^3.5.3",
+    "node-sass": "^4.14.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1"
   },
   "scripts": {
     "watch": "nodemon -w src -e js,jsx,scss -w webpack.config.js -x npm run build",
@@ -23,10 +22,11 @@
     "package": "npm run build:prod; xdpm package"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^17.0.0",
+    "@babel/core": "^7.9.6",
+    "eslint-config-airbnb": "^18.1.0",
     "is-blank": "^2.1.0",
     "is-number": "^7.0.0",
-    "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0"
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   }
 }

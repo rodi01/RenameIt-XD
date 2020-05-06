@@ -2,15 +2,16 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-10-12 18:54:23
+ * @Last Modified time: 2020-05-06 01:46:34
  */
 
 import React from "react"
 import isBlank from "is-blank"
 import isNumber from "is-number"
-import {Rename} from "renameitlib"
+import { Rename } from "@rodi01/renameitlib"
 import Preview from "./Preview.jsx"
 import style from "./styles.scss"
+import { hasChildLayer, getChildLayerName } from "./lib/RenameHelper"
 
 class RenameLayers extends React.Component {
   constructor(props) {
@@ -20,32 +21,22 @@ class RenameLayers extends React.Component {
       sequence: 1,
       previewData: [],
       showError: "",
-      disableButton: true
+      disableButton: true,
+      disableChildBtn: !hasChildLayer(props.selection.items),
     }
 
     this.rename = new Rename()
     this.rename.allowPageName = false
+    this.rename.allowChildLayer = true
 
     this.isSubmitting = false
     this.reorderedSelection = this.reorderSelection()
-    this.onNameInputChange = this
-      .onNameInputChange
-      .bind(this)
-    this.onSequenceInputChange = this
-      .onSequenceInputChange
-      .bind(this)
-    this.onSubmit = this
-      .onSubmit
-      .bind(this)
-    this.onCancelClick = this
-      .onCancelClick
-      .bind(this)
-    this.enterFunction = this
-      .enterFunction
-      .bind(this)
-    this.onButtonClicked = this
-      .onButtonClicked
-      .bind(this)
+    this.onNameInputChange = this.onNameInputChange.bind(this)
+    this.onSequenceInputChange = this.onSequenceInputChange.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.onCancelClick = this.onCancelClick.bind(this)
+    this.enterFunction = this.enterFunction.bind(this)
+    this.onButtonClicked = this.onButtonClicked.bind(this)
   }
 
   componentDidMount() {
@@ -57,20 +48,16 @@ class RenameLayers extends React.Component {
 
   reorderSelection() {
     const firstParent = this.props.selection.items[0].parent
-    const sameParent = this
-      .props
-      .selection
-      .items
-      .every((elem) => elem.parent.guid === firstParent.guid)
+    const sameParent = this.props.selection.items.every(
+      (elem) => elem.parent.guid === firstParent.guid
+    )
     if (sameParent) {
       const arr = []
-      firstParent
-        .children
-        .forEach((child) => {
-          if (this.props.selection.items.includes(child)) {
-            arr.push(child)
-          }
-        })
+      firstParent.children.forEach((child) => {
+        if (this.props.selection.items.includes(child)) {
+          arr.push(child)
+        }
+      })
 
       return arr
     } else {
@@ -87,46 +74,50 @@ class RenameLayers extends React.Component {
       selectionCount: this.props.selection.items.length,
       inputName: this.state.valueAttr,
       startsFrom: Number(this.state.sequence),
-      parentName: item.parent.name
+      parentName: item.parent.name,
+      childLayer: getChildLayerName(item),
     }
-    return this
-      .rename
-      .layer(options)
+    return this.rename.layer(options)
   }
 
   onNameInputChange(e) {
-    this.setState({
-      valueAttr: e.target.value
-    }, () => this.previewUpdate())
+    this.setState(
+      {
+        valueAttr: e.target.value,
+      },
+      () => this.previewUpdate()
+    )
   }
 
   onSequenceInputChange(e) {
     if (e.target.value == "" || isNumber(e.target.value)) {
-      this.setState({
-        sequence: e.target.value,
-        showError: ""
-      }, () => this.previewUpdate())
+      this.setState(
+        {
+          sequence: e.target.value,
+          showError: "",
+        },
+        () => this.previewUpdate()
+      )
     } else {
-      this.setState({
-        sequence: e.target.value,
-        showError: "show"
-      }, () => this.previewUpdate())
+      this.setState(
+        {
+          sequence: e.target.value,
+          showError: "show",
+        },
+        () => this.previewUpdate()
+      )
     }
   }
 
   previewUpdate() {
     let renamed = []
-    this
-      .reorderedSelection
-      .forEach((item, index) => {
-        renamed.push(this.doRename(item, index))
-      })
-    this.setState({previewData: renamed})
+    this.reorderedSelection.forEach((item, index) => {
+      renamed.push(this.doRename(item, index))
+    })
+    this.setState({ previewData: renamed })
 
     this.setState({
-      disableButton: !isBlank(this.state.valueAttr) && isNumber(this.state.sequence)
-        ? ""
-        : true
+      disableButton: !isBlank(this.state.valueAttr) && isNumber(this.state.sequence) ? "" : true,
     })
   }
 
@@ -141,38 +132,29 @@ class RenameLayers extends React.Component {
   onSubmit(e) {
     if (!isBlank(this.state.valueAttr) && isNumber(this.state.sequence) && !this.isSubmiting) {
       this.isSubmiting = true
-      this
-        .reorderedSelection
-        .forEach((item, index) => {
-          item.name = this.doRename(item, index)
-        })
+      this.reorderedSelection.forEach((item, index) => {
+        item.name = this.doRename(item, index)
+      })
       document.removeEventListener("keydown", this.enterFunction, false)
-      this
-        .props
-        .dialog
-        .close()
+      this.props.dialog.close()
     } else {
       return
     }
   }
 
   onCancelClick(e) {
-    this
-      .props
-      .dialog
-      .close()
+    this.props.dialog.close()
   }
 
   onButtonClicked(e) {
     e.preventDefault()
 
-    this.setState({
-      valueAttr: `${this
-        .state
-        .valueAttr}${e
-        .target
-        .getAttribute("data-char")}`
-    }, () => this.previewUpdate())
+    this.setState(
+      {
+        valueAttr: `${this.state.valueAttr}${e.target.getAttribute("data-char")}`,
+      },
+      () => this.previewUpdate()
+    )
   }
 
   render() {
@@ -180,32 +162,44 @@ class RenameLayers extends React.Component {
       {
         id: "currentLayer",
         char: "%*",
-        text: "Layer Name"
-      }, {
+        text: "Layer Name",
+      },
+      {
         id: "layerWidth",
         char: "%w",
-        text: "Layer Width"
-      }, {
+        text: "Layer Width",
+      },
+      {
         id: "layerHeight",
         char: "%h",
-        text: "Layer Height"
-      }, {
+        text: "Layer Height",
+      },
+      {
         id: "sequenceAsc",
-        char: "%n",
-        text: "Num. Sequence ASC"
-      }, {
-        id: "sequenceDesc",
         char: "%N",
-        text: "Num. Sequence DESC"
-      }, {
+        text: "Num. Sequence ASC",
+      },
+      {
+        id: "sequenceDesc",
+        char: "%n",
+        text: "Num. Sequence DESC",
+      },
+      {
         id: "sequenceAlpha",
         char: "%A",
-        text: "Alphabet Sequence"
-      }, {
+        text: "Alphabet Sequence",
+      },
+      {
         id: "parentName",
         char: "%o",
-        text: "Parent Name"
-      }
+        text: "Parent Name",
+      },
+      {
+        id: "childLayer",
+        char: "%ch%",
+        text: "Child Layer",
+        disabled: this.state.disableChildBtn,
+      },
     ]
 
     const listItems = buttons.map((b) => (
@@ -214,17 +208,22 @@ class RenameLayers extends React.Component {
           uxp-variant="action"
           title={`Shortcut: ${b.char}`}
           onClick={this.onButtonClicked}
-          data-char={b.char}>
+          data-char={b.char}
+          disabled={b.disabled}
+        >
           {b.text}
         </button>
       </li>
     ))
     return (
-      <form method="dialog" style={{
-        width: 320
-      }}>
+      <form
+        method="dialog"
+        style={{
+          width: 350,
+        }}
+      >
         <h1>Rename Selected Layers</h1>
-        <hr/>
+        <hr />
         <div className="inputWrapper">
           <span>Name</span>
           <input
@@ -233,7 +232,8 @@ class RenameLayers extends React.Component {
             placeholder="Item %n"
             value={this.state.valueAttr}
             onChange={this.onNameInputChange}
-            ref="name"/>
+            ref="name"
+          />
         </div>
         <div className="inputWrapper sequenceInput">
           <span>Start from</span>
@@ -241,7 +241,8 @@ class RenameLayers extends React.Component {
             type="number"
             id="sequence"
             value={this.state.sequence}
-            onChange={this.onSequenceInputChange}/>
+            onChange={this.onSequenceInputChange}
+          />
           <span className={`error ${this.state.showError}`}>&larr; Number is required</span>
         </div>
         <section id="keywordsSection">
@@ -249,7 +250,7 @@ class RenameLayers extends React.Component {
           <ul className="keywords">{listItems}</ul>
         </section>
 
-        <Preview data={this.state.previewData}/>
+        <Preview data={this.state.previewData} />
         <footer>
           <button type="submit" uxp-variant="secondary" onClick={this.onCancelClick}>
             Cancel
@@ -258,7 +259,8 @@ class RenameLayers extends React.Component {
             type="submit"
             uxp-variant="cta"
             disabled={this.state.disableButton}
-            onClick={this.onSubmit}>
+            onClick={this.onSubmit}
+          >
             Rename
           </button>
         </footer>
