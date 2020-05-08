@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-06 01:46:34
+ * @Last Modified time: 2020-05-08 10:39:47
  */
 
 import React from "react"
@@ -12,6 +12,7 @@ import { Rename } from "@rodi01/renameitlib"
 import Preview from "./Preview.jsx"
 import style from "./styles.scss"
 import { hasChildLayer, getChildLayerName } from "./lib/RenameHelper"
+import { track } from "./lib/GoogleAnalytics.js"
 
 class RenameLayers extends React.Component {
   constructor(props) {
@@ -110,6 +111,7 @@ class RenameLayers extends React.Component {
   }
 
   previewUpdate() {
+    track("UA-104184459-2", "pageview", { dp: "/rename" })
     let renamed = []
     this.reorderedSelection.forEach((item, index) => {
       renamed.push(this.doRename(item, index))

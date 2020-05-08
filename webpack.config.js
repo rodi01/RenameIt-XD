@@ -9,6 +9,7 @@ module.exports = {
   externals: {
     uxp: "uxp",
     scenegraph: "scenegraph",
+    application: "application",
   },
   module: {
     rules: [
