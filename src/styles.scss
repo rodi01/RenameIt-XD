@@ -66,13 +66,30 @@ h3 {
   margin-top: 16px;
   color: #333;
   display: block;
-  height: 38px;
+  height: 63px;
   overflow: hidden;
   strong {
     font-weight: bold;
   }
   &.noMatch {
     color: #f44b60;
+  }
+  & .hide {
+    display: none;
+  }
+  & .show {
+    display: block;
+  }
+  h3 {
+    margin-left: 0;
+  }
+  .previewText {
+    margin-top: 8px;
+    display: block;
+
+    // text-overflow: ellipsis;
+    line-height: 1.3em;
+    overflow: hidden;
   }
 }
 

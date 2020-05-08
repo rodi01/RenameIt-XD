@@ -1582,7 +1582,7 @@ function upperCaseFirst(input) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "h1 {\n  padding-left: 0;\n  margin-left: 0; }\n\nhr + div {\n  margin-top: 16px; }\n\n#keywordsSection {\n  padding-top: 24px;\n  margin-left: -6px; }\n\n.mt24 {\n  margin-top: 24px; }\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1px; }\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px; }\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px; }\n  .keywordBtn button {\n    margin: 0; }\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n  .inputWrapper input[type=\"text\"] {\n    flex: 1 1; }\n  .inputWrapper span {\n    flex-shrink: 0;\n    width: 70px;\n    text-align: left; }\n\n.sequenceInput input {\n  width: 60px; }\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: block;\n  height: 38px;\n  overflow: hidden; }\n  #preview strong {\n    font-weight: bold; }\n  #preview.noMatch {\n    color: #f44b60; }\n\n.caseSesitiveWrapper {\n  padding-top: 8px; }\n  .caseSesitiveWrapper span {\n    width: auto; }\n\n.dropdown {\n  position: relative;\n  z-index: 998;\n  width: 34px; }\n  .dropdown.opened .historyIcon {\n    background-color: #e4e4e4;\n    border-color: #c9c9c9; }\n\n.historyIcon {\n  background-color: #fafafa;\n  border: #e4e4e4 1px solid;\n  border-radius: 3px;\n  width: 34px;\n  height: 24px; }\n\n.error {\n  color: #f44b60;\n  font-size: 11px;\n  visibility: hidden; }\n  .error.show {\n    visibility: visible; }\n", ""]);
+exports.push([module.i, "h1 {\n  padding-left: 0;\n  margin-left: 0; }\n\nhr + div {\n  margin-top: 16px; }\n\n#keywordsSection {\n  padding-top: 24px;\n  margin-left: -6px; }\n\n.mt24 {\n  margin-top: 24px; }\n\nh3 {\n  font-size: 11px;\n  color: #707070;\n  font-weight: normal;\n  letter-spacing: 1px; }\n\n.keywords {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: left;\n  padding-top: 8px; }\n\n.keywordBtn {\n  display: block;\n  padding: 0;\n  margin: 6px; }\n  .keywordBtn button {\n    margin: 0; }\n\n.inputWrapper {\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n  .inputWrapper input[type=\"text\"] {\n    flex: 1 1; }\n  .inputWrapper span {\n    flex-shrink: 0;\n    width: 70px;\n    text-align: left; }\n\n.sequenceInput input {\n  width: 60px; }\n\n#preview {\n  margin-top: 16px;\n  color: #333;\n  display: block;\n  height: 63px;\n  overflow: hidden; }\n  #preview strong {\n    font-weight: bold; }\n  #preview.noMatch {\n    color: #f44b60; }\n  #preview .hide {\n    display: none; }\n  #preview .show {\n    display: block; }\n  #preview h3 {\n    margin-left: 0; }\n  #preview .previewText {\n    margin-top: 8px;\n    display: block;\n    line-height: 1.3em;\n    overflow: hidden; }\n\n.caseSesitiveWrapper {\n  padding-top: 8px; }\n  .caseSesitiveWrapper span {\n    width: auto; }\n\n.dropdown {\n  position: relative;\n  z-index: 998;\n  width: 34px; }\n  .dropdown.opened .historyIcon {\n    background-color: #e4e4e4;\n    border-color: #c9c9c9; }\n\n.historyIcon {\n  background-color: #fafafa;\n  border: #e4e4e4 1px solid;\n  border-radius: 3px;\n  width: 34px;\n  height: 24px; }\n\n.error {\n  color: #f44b60;\n  font-size: 11px;\n  visibility: hidden; }\n  .error.show {\n    visibility: visible; }\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -30923,7 +30923,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _rodi01_renameitlib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @rodi01/renameitlib */ "./node_modules/@rodi01/renameitlib/lib/index.js");
 /* harmony import */ var _rodi01_renameitlib__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_rodi01_renameitlib__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _Preview_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Preview.jsx */ "./src/Preview.jsx");
-/* harmony import */ var _Preview_jsx__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_Preview_jsx__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles.scss */ "./src/styles.scss");
 /* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_styles_scss__WEBPACK_IMPORTED_MODULE_4__);
 /*
@@ -31081,7 +31080,7 @@ class FindReplaceLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Com
       id: "case",
       defaultChecked: this.state.caseSensitive,
       ref: el => el && (el.onchange = () => this.onCaseSensitiveChange(el))
-    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Preview_jsx__WEBPACK_IMPORTED_MODULE_3___default.a, {
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Preview_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
       data: this.state.previewData,
       noMatch: this.state.noMatch
     }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
@@ -31156,53 +31155,75 @@ class NoSelection extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
 /*!*************************!*\
   !*** ./src/Preview.jsx ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var is_blank__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! is-blank */ "./node_modules/is-blank/index.js");
+/* harmony import */ var is_blank__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(is_blank__WEBPACK_IMPORTED_MODULE_1__);
 /*
  * @Author: Rodrigo Soares
  * @Date: 2018-08-07 15:21:14
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-06 02:00:42
+ * @Last Modified time: 2020-05-08 00:23:47
  */
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
-const isBlank = __webpack_require__(/*! is-blank */ "./node_modules/is-blank/index.js");
 
-class Preview extends React.Component {
+
+class Preview extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   constructor(props) {
     super(props);
     this.state = {
-      preview: ""
+      preview: "",
+      showPreview: "hide"
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       preview: nextProps.data.filter(val => val).join(", ")
-    });
+    }, () => this.updateClassName());
+  }
+
+  updateClassName() {
+    if (is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.state.preview) && is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.props.noMatch)) {
+      this.setState({
+        showPreview: "hide"
+      });
+    } else {
+      this.setState({
+        showPreview: "show"
+      });
+    }
   }
 
   renderPreviewText() {
-    if (isBlank(this.state.preview) && isBlank(this.props.noMatch)) {
-      return React.createElement("span", null, "\xA0");
-    } else if (!isBlank(this.props.noMatch)) {
+    if (is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.state.preview) && is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.props.noMatch)) {
+      return ` `;
+    } else if (!is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.props.noMatch)) {
       return `${this.props.noMatch}`;
     } else {
-      return `Preview: ${this.state.preview}`;
+      return `${this.state.preview}`;
     }
   }
 
   render() {
-    return React.createElement("div", {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       id: "preview",
-      className: isBlank(this.props.noMatch) ? "" : "noMatch"
-    }, this.renderPreviewText());
+      className: is_blank__WEBPACK_IMPORTED_MODULE_1___default()(this.props.noMatch) ? "" : "noMatch"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+      className: this.state.showPreview
+    }, "PREVIEW"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "previewText"
+    }, this.renderPreviewText()));
   }
 
 }
 
-module.exports = Preview;
+/* harmony default export */ __webpack_exports__["default"] = (Preview);
 
 /***/ }),
 
@@ -31224,7 +31245,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _rodi01_renameitlib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @rodi01/renameitlib */ "./node_modules/@rodi01/renameitlib/lib/index.js");
 /* harmony import */ var _rodi01_renameitlib__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_rodi01_renameitlib__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _Preview_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Preview.jsx */ "./src/Preview.jsx");
-/* harmony import */ var _Preview_jsx__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Preview_jsx__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles.scss */ "./src/styles.scss");
 /* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_styles_scss__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _lib_RenameHelper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lib/RenameHelper */ "./src/lib/RenameHelper.js");
@@ -31443,7 +31463,7 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
       id: "keywordsSection"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "KEYWORDS"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
       className: "keywords"
-    }, listItems)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Preview_jsx__WEBPACK_IMPORTED_MODULE_4___default.a, {
+    }, listItems)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Preview_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
       data: this.state.previewData
     }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
       type: "submit",
