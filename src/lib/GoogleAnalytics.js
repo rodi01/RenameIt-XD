@@ -97,7 +97,7 @@ export async function track(trackingId, hitType, props, options) {
   }
 
   payload.an = manifest.name
-  payload.aid = "com.renameit.design"x
+  payload.aid = "com.renameit.design"
   payload.av = manifest.version
 
   if (props) {
