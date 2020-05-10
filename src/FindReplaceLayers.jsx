@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-10-21 11:12:17
+ * @Last Modified time: 2020-05-09 02:28:41
  */
 
 import React from "react"
@@ -10,6 +10,7 @@ import isBlank from "is-blank"
 import { FindReplace } from "@rodi01/renameitlib"
 import Preview from "./Preview.jsx"
 import style from "./styles.scss"
+import { track } from "./lib/GoogleAnalytics.js"
 
 class FindReplaceLayers extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class FindReplaceLayers extends React.Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.onCancelClick = this.onCancelClick.bind(this)
     this.enterFunction = this.enterFunction.bind(this)
+    track("pageview", { dp: "/find_replace" })
   }
 
   componentDidMount() {
@@ -113,6 +115,12 @@ class FindReplaceLayers extends React.Component {
 
     document.removeEventListener("keydown", this.enterFunction, false)
     this.props.dialog.close()
+
+    track("event", {
+      ec: "input",
+      ea: `searchScope`,
+      el: `layers`,
+    })
   }
 
   onCancelClick(e) {

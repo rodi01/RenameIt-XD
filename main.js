@@ -31708,12 +31708,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Preview_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Preview.jsx */ "./src/Preview.jsx");
 /* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./styles.scss */ "./src/styles.scss");
 /* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_styles_scss__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lib/GoogleAnalytics.js */ "./src/lib/GoogleAnalytics.js");
 /*
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2019-10-21 11:12:17
+ * @Last Modified time: 2020-05-09 02:28:41
  */
+
 
 
 
@@ -31737,6 +31739,9 @@ class FindReplaceLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Com
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
     this.enterFunction = this.enterFunction.bind(this);
+    Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_5__["track"])("pageview", {
+      dp: "/find_replace"
+    });
   }
 
   componentDidMount() {
@@ -31811,6 +31816,11 @@ class FindReplaceLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Com
     });
     document.removeEventListener("keydown", this.enterFunction, false);
     this.props.dialog.close();
+    Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_5__["track"])("event", {
+      ec: "input",
+      ea: `searchScope`,
+      el: `layers`
+    });
   }
 
   onCancelClick(e) {
@@ -32036,7 +32046,7 @@ __webpack_require__.r(__webpack_exports__);
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-08 10:39:47
+ * @Last Modified time: 2020-05-09 02:08:10
  */
 
 
@@ -32069,6 +32079,9 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
     this.onCancelClick = this.onCancelClick.bind(this);
     this.enterFunction = this.enterFunction.bind(this);
     this.onButtonClicked = this.onButtonClicked.bind(this);
+    Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_7__["track"])("pageview", {
+      dp: "/rename"
+    });
   }
 
   componentDidMount() {
@@ -32132,9 +32145,6 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
   }
 
   previewUpdate() {
-    Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_7__["track"])("UA-104184459-2", "pageview", {
-      dp: "/rename"
-    });
     let renamed = [];
     this.reorderedSelection.forEach((item, index) => {
       renamed.push(this.doRename(item, index));
@@ -32163,6 +32173,11 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
       });
       document.removeEventListener("keydown", this.enterFunction, false);
       this.props.dialog.close();
+      Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_7__["track"])("event", {
+        ec: "input",
+        ea: "rename",
+        el: String(this.state.valueAttr)
+      });
     } else {
       return;
     }
@@ -32177,6 +32192,11 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
     this.setState({
       valueAttr: `${this.state.valueAttr}${e.target.getAttribute("data-char")}`
     }, () => this.previewUpdate());
+    Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_7__["track"])("event", {
+      ec: "keywordButton",
+      ea: `${e.target.getAttribute("id")}`,
+      el: `${e.target.getAttribute("data-char")}`
+    });
   }
 
   render() {
@@ -32219,6 +32239,7 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
       className: "keywordBtn"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
       "uxp-variant": "action",
+      id: b.id,
       title: `Shortcut: ${b.char}`,
       onClick: this.onButtonClicked,
       "data-char": b.char,
@@ -32318,6 +32339,7 @@ const kUUIDKey = "google.analytics.uuid";
 const kAnalyticsEnabled = "analytics.enabled";
 const UUDID_key = "218c9690-9112-11ea-bb37-0242ac130002";
 const source = `Adobe XD ${application__WEBPACK_IMPORTED_MODULE_0___default.a.version}`;
+const trackingId = "UA-104184459-2";
 
 async function getUUID() {
   let uuid = await xd_storage_helper__WEBPACK_IMPORTED_MODULE_1___default.a.get(kUUIDKey, null);
@@ -32346,26 +32368,43 @@ function makeRequest(url, options) {
   } //   if (options && options.makeRequest) {
   //     return options.makeRequest(url)
   //   }
-  //   if (options && options.debug) {
-  //     var request = NSURLRequest.requestWithURL(url)
-  //     var responsePtr = MOPointer.alloc().init()
-  //     var errorPtr = MOPointer.alloc().init()
-  //     var data = NSURLConnection.sendSynchronousRequest_returningResponse_error(
-  //       request,
-  //       responsePtr,
-  //       errorPtr
-  //     )
-  //     return data
-  //       ? NSString.alloc().initWithData_encoding(data, NSUTF8StringEncoding)
-  //       : errorPtr.value()
-  //   }
-  //   NSURLSession.sharedSession().dataTaskWithURL(url).resume()
 
+
+  return new Promise((resolve, reject) => {
+    const req = new XMLHttpRequest();
+
+    req.onload = () => {
+      if (req.status === 200) {
+        try {
+          resolve(req.response);
+        } catch (err) {
+          reject("Couldnt parse response. ${err.message}, ${req.response}");
+        }
+      } else {
+        reject("Request had an error: ${req.status}");
+      }
+    };
+
+    req.open("GET", url, true);
+    req.send();
+  }); // if (options && options.debug) {
+  //   var request = NSURLRequest.requestWithURL(url)
+  //   var responsePtr = MOPointer.alloc().init()
+  //   var errorPtr = MOPointer.alloc().init()
+  //   var data = NSURLConnection.sendSynchronousRequest_returningResponse_error(
+  //     request,
+  //     responsePtr,
+  //     errorPtr
+  //   )
+  //   return data
+  //     ? NSString.alloc().initWithData_encoding(data, NSUTF8StringEncoding)
+  //     : errorPtr.value()
+  // }
+  //   NSURLSession.sharedSession().dataTaskWithURL(url).resume()
 }
 
-async function track(trackingId, hitType, props, options) {
+async function track(hitType, props, options) {
   const isAnalyticsEnabled = await analyticsEnabled();
-  console.log(`Analytics: ${isAnalyticsEnabled}`);
 
   if (!isAnalyticsEnabled) {
     // the user didn't enable sharing analytics
@@ -32390,9 +32429,21 @@ async function track(trackingId, hitType, props, options) {
   }
 
   const url = `https://www.google-analytics.com/${options && options.debug ? "debug/" : ""}collect?${jsonToQueryString(payload)}&z=${Date.now()}`; // return makeRequest(url, options)
+  // console.log(url)
 
-  console.log(url);
-  return url;
+  return makeRequest(url, options); // if (options && options.debug) {
+  //   var request = makeRequest(url, options)
+  //   var data = NSURLConnection.sendSynchronousRequest_returningResponse_error(
+  //     request,
+  //     responsePtr,
+  //     errorPtr
+  //   )
+  //   return data
+  //     ? NSString.alloc().initWithData_encoding(data, NSUTF8StringEncoding)
+  //     : errorPtr.value()
+  // } else {
+  //   return makeRequest(url, options)
+  // }
 } // https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe%20XD%2028.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename%20it&aid=com.renameit.design&av=1.1.2&dp=%2Frename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
 // https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe XD 28.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename it&aid=com.renameit.design&av=1.1.2&dp=/rename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
 // tid = UA-104184459-2
