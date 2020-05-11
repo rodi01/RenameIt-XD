@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-06 01:55:22
+ * @Last Modified time: 2020-05-11 02:03:55
  */
 
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
@@ -13,9 +13,11 @@ global.clearTimeout = function () {}
 
 const React = require("react")
 const ReactDOM = require("react-dom")
+const analyticsFirstRun = require("./lib/GoogleAnalytics.js").analyticsFirstRun
 const RenameLayers = require("./RenameLayers.jsx").default
 const FindReplace = require("./FindReplaceLayers.jsx").default
 const NoSelection = require("./NoSelection.jsx").default
+const AnalyticsDialog = require("./AnalyticsDialog.jsx").default
 
 const whereTo = {
   RENAME: 0,
@@ -24,29 +26,36 @@ const whereTo = {
 }
 
 let dialog
-function showDialog(selection, to, documentRoot) {
+async function showDialog(selection, to, documentRoot) {
+  const firstRun = await analyticsFirstRun()
+  console.log(firstRun)
+
   const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null
 
   if (dialog == null) {
     dialog = document.createElement("dialog")
-    switch (where) {
-      case whereTo.RENAME:
-        ReactDOM.render(
-          <RenameLayers dialog={dialog} selection={selection} documentRoot={documentRoot} />,
-          dialog
-        )
-        break
+    if (firstRun) {
+      ReactDOM.render(<AnalyticsDialog dialog={dialog} />, dialog)
+    } else {
+      switch (where) {
+        case whereTo.RENAME:
+          ReactDOM.render(
+            <RenameLayers dialog={dialog} selection={selection} documentRoot={documentRoot} />,
+            dialog
+          )
+          break
 
-      case whereTo.FIND:
-        ReactDOM.render(<FindReplace dialog={dialog} selection={selection} />, dialog)
-        break
+        case whereTo.FIND:
+          ReactDOM.render(<FindReplace dialog={dialog} selection={selection} />, dialog)
+          break
 
-      case whereTo.SETTINGS:
-        break
+        case whereTo.SETTINGS:
+          break
 
-      default:
-        ReactDOM.render(<NoSelection dialog={dialog} />, dialog)
-        break
+        default:
+          ReactDOM.render(<NoSelection dialog={dialog} />, dialog)
+          break
+      }
     }
   }
 

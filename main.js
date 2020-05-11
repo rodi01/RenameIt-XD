@@ -31690,6 +31690,73 @@ module.exports = storageHelper;
 
 /***/ }),
 
+/***/ "./src/AnalyticsDialog.jsx":
+/*!*********************************!*\
+  !*** ./src/AnalyticsDialog.jsx ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/GoogleAnalytics.js */ "./src/lib/GoogleAnalytics.js");
+/*
+ * @Author: Rodrigo Soares
+ * @Date: 2018-08-11 22:14:31
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2020-05-11 01:48:55
+ */
+
+
+
+class AnalyticsDialog extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.onAgreeClick = this.onAgreeClick.bind(this);
+    this.onDisagreeClick = this.onDisagreeClick.bind(this);
+  }
+
+  async componentDidMount() {
+    await Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__["setAnalyticsFirstRun"])();
+  }
+
+  async onAgreeClick(e) {
+    await Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__["setAnalyticsEnabled"])(true);
+    this.props.dialog.close();
+  }
+
+  async onDisagreeClick(e) {
+    await Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__["setAnalyticsEnabled"])(false);
+    this.props.dialog.close();
+  }
+
+  render() {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      method: "dialog",
+      style: {
+        width: 300
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Analytics"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Rename It uses Google Analytics to help improving the product. Click on 'Agree' to send diagnostics or 'Disagree' to disable analytics."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+      className: "mt24"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      type: "submit",
+      "uxp-variant": "secondary",
+      onClick: this.onDisagreeClick
+    }, "Disagree"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      type: "submit",
+      "uxp-variant": "cta",
+      onClick: this.onAgreeClick
+    }, "Agree")));
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (AnalyticsDialog);
+
+/***/ }),
+
 /***/ "./src/FindReplaceLayers.jsx":
 /*!***********************************!*\
   !*** ./src/FindReplaceLayers.jsx ***!
@@ -31713,7 +31780,7 @@ __webpack_require__.r(__webpack_exports__);
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-09 02:28:41
+ * @Last Modified time: 2020-05-10 23:56:56
  */
 
 
@@ -31821,6 +31888,16 @@ class FindReplaceLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Com
       ea: `searchScope`,
       el: `layers`
     });
+
+    ec: "input", Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_5__["track"])("event", {
+      ea: `find`,
+      el: `${this.state.findValue}`
+    });
+
+    ec: "input", Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_5__["track"])("event", {
+      ea: `replace`,
+      el: `${this.state.replaceValue}`
+    });
   }
 
   onCancelClick(e) {
@@ -31906,10 +31983,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /*
- * @Author: Rodrigo Soares 
- * @Date: 2018-08-11 22:14:31 
+ * @Author: Rodrigo Soares
+ * @Date: 2018-08-11 22:14:31
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2018-11-04 20:22:27
+ * @Last Modified time: 2020-05-11 01:46:00
  */
 
 
@@ -32296,11 +32373,14 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
 /*!************************************!*\
   !*** ./src/lib/GoogleAnalytics.js ***!
   \************************************/
-/*! exports provided: track */
+/*! exports provided: setAnalyticsEnabled, analyticsFirstRun, setAnalyticsFirstRun, track */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAnalyticsEnabled", function() { return setAnalyticsEnabled; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "analyticsFirstRun", function() { return analyticsFirstRun; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAnalyticsFirstRun", function() { return setAnalyticsFirstRun; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "track", function() { return track; });
 /* harmony import */ var application__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! application */ "application");
 /* harmony import */ var application__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(application__WEBPACK_IMPORTED_MODULE_0__);
@@ -32337,6 +32417,7 @@ const manifest = __webpack_require__(/*! ../../manifest.json */ "./manifest.json
 
 const kUUIDKey = "google.analytics.uuid";
 const kAnalyticsEnabled = "analytics.enabled";
+const kAnalyticsFirstRun = "analytics.first.run";
 const UUDID_key = "218c9690-9112-11ea-bb37-0242ac130002";
 const source = `Adobe XD ${application__WEBPACK_IMPORTED_MODULE_0___default.a.version}`;
 const trackingId = "UA-104184459-2";
@@ -32356,6 +32437,16 @@ async function analyticsEnabled() {
   return await xd_storage_helper__WEBPACK_IMPORTED_MODULE_1___default.a.get(kAnalyticsEnabled, true);
 }
 
+async function setAnalyticsEnabled(value) {
+  await xd_storage_helper__WEBPACK_IMPORTED_MODULE_1___default.a.set(kAnalyticsEnabled, value);
+}
+async function analyticsFirstRun() {
+  return await xd_storage_helper__WEBPACK_IMPORTED_MODULE_1___default.a.get(kAnalyticsFirstRun, true);
+}
+async function setAnalyticsFirstRun() {
+  await xd_storage_helper__WEBPACK_IMPORTED_MODULE_1___default.a.set(kAnalyticsFirstRun, false);
+}
+
 function jsonToQueryString(json) {
   return Object.keys(json).map(function (key) {
     return encodeURIComponent(key) + "=" + encodeURIComponent(json[key]);
@@ -32365,10 +32456,7 @@ function jsonToQueryString(json) {
 function makeRequest(url, options) {
   if (!url) {
     return;
-  } //   if (options && options.makeRequest) {
-  //     return options.makeRequest(url)
-  //   }
-
+  }
 
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
@@ -32387,20 +32475,7 @@ function makeRequest(url, options) {
 
     req.open("GET", url, true);
     req.send();
-  }); // if (options && options.debug) {
-  //   var request = NSURLRequest.requestWithURL(url)
-  //   var responsePtr = MOPointer.alloc().init()
-  //   var errorPtr = MOPointer.alloc().init()
-  //   var data = NSURLConnection.sendSynchronousRequest_returningResponse_error(
-  //     request,
-  //     responsePtr,
-  //     errorPtr
-  //   )
-  //   return data
-  //     ? NSString.alloc().initWithData_encoding(data, NSUTF8StringEncoding)
-  //     : errorPtr.value()
-  // }
-  //   NSURLSession.sharedSession().dataTaskWithURL(url).resume()
+  });
 }
 
 async function track(hitType, props, options) {
@@ -32428,22 +32503,15 @@ async function track(hitType, props, options) {
     });
   }
 
-  const url = `https://www.google-analytics.com/${options && options.debug ? "debug/" : ""}collect?${jsonToQueryString(payload)}&z=${Date.now()}`; // return makeRequest(url, options)
-  // console.log(url)
+  const url = `https://www.google-analytics.com/${options && options.debug ? "debug/" : ""}collect?${jsonToQueryString(payload)}&z=${Date.now()}`;
 
-  return makeRequest(url, options); // if (options && options.debug) {
-  //   var request = makeRequest(url, options)
-  //   var data = NSURLConnection.sendSynchronousRequest_returningResponse_error(
-  //     request,
-  //     responsePtr,
-  //     errorPtr
-  //   )
-  //   return data
-  //     ? NSString.alloc().initWithData_encoding(data, NSUTF8StringEncoding)
-  //     : errorPtr.value()
-  // } else {
-  //   return makeRequest(url, options)
-  // }
+  if (options && options.debug) {
+    console.log("DEBUG: Analytics");
+    console.log(payload);
+    console.log(`url: ${url}`);
+  }
+
+  return makeRequest(url, options);
 } // https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe%20XD%2028.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename%20it&aid=com.renameit.design&av=1.1.2&dp=%2Frename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
 // https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe XD 28.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename it&aid=com.renameit.design&av=1.1.2&dp=/rename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
 // tid = UA-104184459-2
@@ -32511,7 +32579,7 @@ function getChildLayerName(node) {
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-06 01:55:22
+ * @Last Modified time: 2020-05-11 02:03:55
  */
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
 global.setTimeout = function (fn) {
@@ -32524,11 +32592,15 @@ const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 
+const analyticsFirstRun = __webpack_require__(/*! ./lib/GoogleAnalytics.js */ "./src/lib/GoogleAnalytics.js").analyticsFirstRun;
+
 const RenameLayers = __webpack_require__(/*! ./RenameLayers.jsx */ "./src/RenameLayers.jsx").default;
 
 const FindReplace = __webpack_require__(/*! ./FindReplaceLayers.jsx */ "./src/FindReplaceLayers.jsx").default;
 
 const NoSelection = __webpack_require__(/*! ./NoSelection.jsx */ "./src/NoSelection.jsx").default;
+
+const AnalyticsDialog = __webpack_require__(/*! ./AnalyticsDialog.jsx */ "./src/AnalyticsDialog.jsx").default;
 
 const whereTo = {
   RENAME: 0,
@@ -32537,36 +32609,44 @@ const whereTo = {
 };
 let dialog;
 
-function showDialog(selection, to, documentRoot) {
+async function showDialog(selection, to, documentRoot) {
+  const firstRun = await analyticsFirstRun();
+  console.log(firstRun);
   const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null;
 
   if (dialog == null) {
     dialog = document.createElement("dialog");
 
-    switch (where) {
-      case whereTo.RENAME:
-        ReactDOM.render(React.createElement(RenameLayers, {
-          dialog: dialog,
-          selection: selection,
-          documentRoot: documentRoot
-        }), dialog);
-        break;
+    if (firstRun) {
+      ReactDOM.render(React.createElement(AnalyticsDialog, {
+        dialog: dialog
+      }), dialog);
+    } else {
+      switch (where) {
+        case whereTo.RENAME:
+          ReactDOM.render(React.createElement(RenameLayers, {
+            dialog: dialog,
+            selection: selection,
+            documentRoot: documentRoot
+          }), dialog);
+          break;
 
-      case whereTo.FIND:
-        ReactDOM.render(React.createElement(FindReplace, {
-          dialog: dialog,
-          selection: selection
-        }), dialog);
-        break;
+        case whereTo.FIND:
+          ReactDOM.render(React.createElement(FindReplace, {
+            dialog: dialog,
+            selection: selection
+          }), dialog);
+          break;
 
-      case whereTo.SETTINGS:
-        break;
+        case whereTo.SETTINGS:
+          break;
 
-      default:
-        ReactDOM.render(React.createElement(NoSelection, {
-          dialog: dialog
-        }), dialog);
-        break;
+        default:
+          ReactDOM.render(React.createElement(NoSelection, {
+            dialog: dialog
+          }), dialog);
+          break;
+      }
     }
   } // Clean dialog so it can be reused
 

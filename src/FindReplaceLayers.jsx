@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-09 02:28:41
+ * @Last Modified time: 2020-05-10 23:56:56
  */
 
 import React from "react"
@@ -121,6 +121,18 @@ class FindReplaceLayers extends React.Component {
       ea: `searchScope`,
       el: `layers`,
     })
+
+    ec: "input",
+      track("event", {
+        ea: `find`,
+        el: `${this.state.findValue}`,
+      })
+
+    ec: "input",
+      track("event", {
+        ea: `replace`,
+        el: `${this.state.replaceValue}`,
+      })
   }
 
   onCancelClick(e) {
