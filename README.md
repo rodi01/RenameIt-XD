@@ -77,3 +77,6 @@ Rename It is maintained by Rodrigo Soares, follow me [@rodi01](https://twitter.c
 [Checkout the website for more](https://renameit.design/xd)
 
 MIT License © Rodrigo Soares.
+
+## Donate
+[Buy me a pizza 🍕](https://www.buymeacoffee.com/rodi01) or donate via [PayPal](https://www.paypal.me/rodi01/5).
