@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-11 02:03:55
+ * @Last Modified time: 2020-05-13 01:31:50
  */
 
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
@@ -28,34 +28,35 @@ const whereTo = {
 let dialog
 async function showDialog(selection, to, documentRoot) {
   const firstRun = await analyticsFirstRun()
-  console.log(firstRun)
 
   const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null
 
   if (dialog == null) {
     dialog = document.createElement("dialog")
+    let whereDialog
+    switch (where) {
+      case whereTo.RENAME:
+        whereDialog = (
+          <RenameLayers dialog={dialog} selection={selection} documentRoot={documentRoot} />
+        )
+        break
+
+      case whereTo.FIND:
+        whereDialog = <FindReplace dialog={dialog} selection={selection} />
+        break
+
+      case whereTo.SETTINGS:
+        break
+
+      default:
+        whereDialog = <NoSelection dialog={dialog} />
+        break
+    }
+
     if (firstRun) {
-      ReactDOM.render(<AnalyticsDialog dialog={dialog} />, dialog)
+      ReactDOM.render(<AnalyticsDialog dialog={dialog} nextDialog={whereDialog} />, dialog)
     } else {
-      switch (where) {
-        case whereTo.RENAME:
-          ReactDOM.render(
-            <RenameLayers dialog={dialog} selection={selection} documentRoot={documentRoot} />,
-            dialog
-          )
-          break
-
-        case whereTo.FIND:
-          ReactDOM.render(<FindReplace dialog={dialog} selection={selection} />, dialog)
-          break
-
-        case whereTo.SETTINGS:
-          break
-
-        default:
-          ReactDOM.render(<NoSelection dialog={dialog} />, dialog)
-          break
-      }
+      ReactDOM.render(whereDialog, dialog)
     }
   }
 

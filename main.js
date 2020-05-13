@@ -31706,8 +31706,11 @@ __webpack_require__.r(__webpack_exports__);
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 22:14:31
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-11 01:48:55
+ * @Last Modified time: 2020-05-13 01:32:53
  */
+
+
+const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 
 
 
@@ -31724,28 +31727,28 @@ class AnalyticsDialog extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compo
 
   async onAgreeClick(e) {
     await Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__["setAnalyticsEnabled"])(true);
-    this.props.dialog.close();
+    ReactDOM.render(this.props.nextDialog, this.props.dialog);
   }
 
   async onDisagreeClick(e) {
     await Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__["setAnalyticsEnabled"])(false);
-    this.props.dialog.close();
+    ReactDOM.render(this.props.nextDialog, this.props.dialog);
   }
 
   render() {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
       method: "dialog",
       style: {
-        width: 300
+        width: 350
       }
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Analytics"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Rename It uses Google Analytics to help improving the product. Click on 'Agree' to send diagnostics or 'Disagree' to disable analytics."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Analytics"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Rename It uses Google Analytics to help improve the plugin. Click on 'Agree' to send diagnostics or 'Disagree' to disable analytics."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
       className: "mt24"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-      type: "submit",
+      type: "button",
       "uxp-variant": "secondary",
       onClick: this.onDisagreeClick
     }, "Disagree"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-      type: "submit",
+      type: "button",
       "uxp-variant": "cta",
       onClick: this.onAgreeClick
     }, "Agree")));
@@ -32579,7 +32582,7 @@ function getChildLayerName(node) {
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-11 02:03:55
+ * @Last Modified time: 2020-05-13 01:31:50
  */
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
 global.setTimeout = function (fn) {
@@ -32611,42 +32614,45 @@ let dialog;
 
 async function showDialog(selection, to, documentRoot) {
   const firstRun = await analyticsFirstRun();
-  console.log(firstRun);
   const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null;
 
   if (dialog == null) {
     dialog = document.createElement("dialog");
+    let whereDialog;
+
+    switch (where) {
+      case whereTo.RENAME:
+        whereDialog = React.createElement(RenameLayers, {
+          dialog: dialog,
+          selection: selection,
+          documentRoot: documentRoot
+        });
+        break;
+
+      case whereTo.FIND:
+        whereDialog = React.createElement(FindReplace, {
+          dialog: dialog,
+          selection: selection
+        });
+        break;
+
+      case whereTo.SETTINGS:
+        break;
+
+      default:
+        whereDialog = React.createElement(NoSelection, {
+          dialog: dialog
+        });
+        break;
+    }
 
     if (firstRun) {
       ReactDOM.render(React.createElement(AnalyticsDialog, {
-        dialog: dialog
+        dialog: dialog,
+        nextDialog: whereDialog
       }), dialog);
     } else {
-      switch (where) {
-        case whereTo.RENAME:
-          ReactDOM.render(React.createElement(RenameLayers, {
-            dialog: dialog,
-            selection: selection,
-            documentRoot: documentRoot
-          }), dialog);
-          break;
-
-        case whereTo.FIND:
-          ReactDOM.render(React.createElement(FindReplace, {
-            dialog: dialog,
-            selection: selection
-          }), dialog);
-          break;
-
-        case whereTo.SETTINGS:
-          break;
-
-        default:
-          ReactDOM.render(React.createElement(NoSelection, {
-            dialog: dialog
-          }), dialog);
-          break;
-      }
+      ReactDOM.render(whereDialog, dialog);
     }
   } // Clean dialog so it can be reused
 
