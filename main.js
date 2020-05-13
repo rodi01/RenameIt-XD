@@ -94,7 +94,7 @@ module.exports =
 /*! exports provided: id, name, version, description, summary, releaseNotes, keywords, languages, website, helpUrl, author, icons, host, uiEntryPoints, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"id\":\"bcd7a3a9\",\"name\":\"Rename it\",\"version\":\"1.1.2\",\"description\":\"Keep your Adobe XD files organized, batch rename layers and artboards.\",\"summary\":\"Batch rename layers\",\"releaseNotes\":\"Added param case, bug fixes.\",\"keywords\":[\"utility\",\"productivity\",\"rename\",\"layers\",\"automation\",\"batch\"],\"languages\":[\"en\"],\"website\":\"https://renameit.design\",\"helpUrl\":\"https://renameit.design/xd\",\"author\":\"Rodrigo Soares\",\"icons\":[{\"width\":24,\"height\":24,\"path\":\"images/icon_24.png\"},{\"width\":48,\"height\":48,\"path\":\"images/icon_48.png\"}],\"host\":{\"app\":\"XD\",\"minVersion\":\"13.0\"},\"uiEntryPoints\":[{\"type\":\"menu\",\"label\":\"Rename It\",\"menuItems\":[{\"type\":\"menu\",\"label\":\"Rename Selected Layers\",\"commandId\":\"renameCommand\",\"shortcut\":{\"mac\":\"Ctrl+Alt+R\",\"win\":\"Ctrl+Alt+R\"}},{\"type\":\"menu\",\"label\":\"Find & Replace Selected Layers\",\"commandId\":\"findReplaceCommand\",\"shortcut\":{\"mac\":\"Ctrl+Option+Cmd+R\",\"win\":\"Shift+Ctrl+Alt+R\"}}]}]}");
+module.exports = JSON.parse("{\"id\":\"bcd7a3a9\",\"name\":\"Rename it\",\"version\":\"1.1.2\",\"description\":\"Keep your Adobe XD files organized, batch rename layers and artboards.\",\"summary\":\"Batch rename layers\",\"releaseNotes\":\"Added param case, bug fixes.\",\"keywords\":[\"utility\",\"productivity\",\"rename\",\"layers\",\"automation\",\"batch\"],\"languages\":[\"en\"],\"website\":\"https://renameit.design\",\"helpUrl\":\"https://renameit.design/xd\",\"author\":\"Rodrigo Soares\",\"icons\":[{\"width\":24,\"height\":24,\"path\":\"images/icon_24.png\"},{\"width\":48,\"height\":48,\"path\":\"images/icon_48.png\"}],\"host\":{\"app\":\"XD\",\"minVersion\":\"13.0\"},\"uiEntryPoints\":[{\"type\":\"menu\",\"label\":\"Rename It\",\"menuItems\":[{\"type\":\"menu\",\"label\":\"Rename Selected Layers\",\"commandId\":\"renameCommand\",\"shortcut\":{\"mac\":\"Ctrl+Alt+R\",\"win\":\"Ctrl+Alt+R\"}},{\"type\":\"menu\",\"label\":\"Find & Replace Selected Layers\",\"commandId\":\"findReplaceCommand\",\"shortcut\":{\"mac\":\"Ctrl+Option+Cmd+R\",\"win\":\"Shift+Ctrl+Alt+R\"}},{\"type\":\"menu\",\"label\":\"Donate\",\"commandId\":\"donateCommand\"}]}]}");
 
 /***/ }),
 
@@ -32582,7 +32582,7 @@ function getChildLayerName(node) {
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-13 01:31:50
+ * @Last Modified time: 2020-05-13 01:50:58
  */
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
 global.setTimeout = function (fn) {
@@ -32594,6 +32594,10 @@ global.clearTimeout = function () {};
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+const {
+  shell
+} = __webpack_require__(/*! uxp */ "uxp");
 
 const analyticsFirstRun = __webpack_require__(/*! ./lib/GoogleAnalytics.js */ "./src/lib/GoogleAnalytics.js").analyticsFirstRun;
 
@@ -32674,6 +32678,9 @@ module.exports = {
       return showDialog(selection, whereTo.FIND).catch(err => {
         return;
       });
+    },
+    donateCommand: function () {
+      shell.openExternal("https://www.paypal.me/rodi01/5");
     }
   }
 };

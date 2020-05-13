@@ -48,6 +48,11 @@
             "mac": "Ctrl+Option+Cmd+R",
             "win": "Shift+Ctrl+Alt+R"
           }
+        },
+        {
+          "type": "menu",
+          "label": "Donate",
+          "commandId": "donateCommand"
         }
       ]
     }

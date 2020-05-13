@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-13 01:31:50
+ * @Last Modified time: 2020-05-13 01:50:58
  */
 
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
@@ -13,6 +13,7 @@ global.clearTimeout = function () {}
 
 const React = require("react")
 const ReactDOM = require("react-dom")
+const { shell } = require("uxp")
 const analyticsFirstRun = require("./lib/GoogleAnalytics.js").analyticsFirstRun
 const RenameLayers = require("./RenameLayers.jsx").default
 const FindReplace = require("./FindReplaceLayers.jsx").default
@@ -79,6 +80,9 @@ module.exports = {
       return showDialog(selection, whereTo.FIND).catch((err) => {
         return
       })
+    },
+    donateCommand: function () {
+      shell.openExternal("https://www.paypal.me/rodi01/5")
     },
   },
 }
