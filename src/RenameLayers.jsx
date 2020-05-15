@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-06 01:46:34
+ * @Last Modified time: 2020-05-14 23:59:19
  */
 
 import React from "react"
@@ -12,6 +12,7 @@ import { Rename } from "@rodi01/renameitlib"
 import Preview from "./Preview.jsx"
 import style from "./styles.scss"
 import { hasChildLayer, getChildLayerName } from "./lib/RenameHelper"
+import { track } from "./lib/GoogleAnalytics.js"
 
 class RenameLayers extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class RenameLayers extends React.Component {
     this.onCancelClick = this.onCancelClick.bind(this)
     this.enterFunction = this.enterFunction.bind(this)
     this.onButtonClicked = this.onButtonClicked.bind(this)
+    track("pageview", { dp: "/rename" })
   }
 
   componentDidMount() {
@@ -137,6 +139,11 @@ class RenameLayers extends React.Component {
       })
       document.removeEventListener("keydown", this.enterFunction, false)
       this.props.dialog.close()
+      track("event", {
+        ec: "input",
+        ea: "rename",
+        el: String(this.state.valueAttr),
+      })
     } else {
       return
     }
@@ -155,6 +162,12 @@ class RenameLayers extends React.Component {
       },
       () => this.previewUpdate()
     )
+
+    track("event", {
+      ec: "keywordButton",
+      ea: `${e.target.getAttribute("id")}`,
+      el: `${e.target.getAttribute("data-char")}`,
+    })
   }
 
   render() {
@@ -206,6 +219,7 @@ class RenameLayers extends React.Component {
       <li key={b.id} className="keywordBtn">
         <button
           uxp-variant="action"
+          id={b.id}
           title={`Shortcut: ${b.char}`}
           onClick={this.onButtonClicked}
           data-char={b.char}
