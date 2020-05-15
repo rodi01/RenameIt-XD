@@ -94,7 +94,7 @@ module.exports =
 /*! exports provided: id, name, version, description, summary, releaseNotes, keywords, languages, website, helpUrl, author, icons, host, uiEntryPoints, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"id\":\"bcd7a3a9\",\"name\":\"Rename it\",\"version\":\"1.1.2\",\"description\":\"Keep your Adobe XD files organized, batch rename layers and artboards.\",\"summary\":\"Batch rename layers\",\"releaseNotes\":\"Added param case, bug fixes.\",\"keywords\":[\"utility\",\"productivity\",\"rename\",\"layers\",\"automation\",\"batch\"],\"languages\":[\"en\"],\"website\":\"https://renameit.design\",\"helpUrl\":\"https://renameit.design/xd\",\"author\":\"Rodrigo Soares\",\"icons\":[{\"width\":24,\"height\":24,\"path\":\"images/icon_24.png\"},{\"width\":48,\"height\":48,\"path\":\"images/icon_48.png\"}],\"host\":{\"app\":\"XD\",\"minVersion\":\"13.0\"},\"uiEntryPoints\":[{\"type\":\"menu\",\"label\":\"Rename It\",\"menuItems\":[{\"type\":\"menu\",\"label\":\"Rename Selected Layers\",\"commandId\":\"renameCommand\",\"shortcut\":{\"mac\":\"Ctrl+Alt+R\",\"win\":\"Ctrl+Alt+R\"}},{\"type\":\"menu\",\"label\":\"Find & Replace Selected Layers\",\"commandId\":\"findReplaceCommand\",\"shortcut\":{\"mac\":\"Ctrl+Option+Cmd+R\",\"win\":\"Shift+Ctrl+Alt+R\"}},{\"type\":\"menu\",\"label\":\"Donate\",\"commandId\":\"donateCommand\"}]}]}");
+module.exports = JSON.parse("{\"id\":\"bcd7a3a9\",\"name\":\"Rename it\",\"version\":\"1.1.2\",\"description\":\"Keep your Adobe XD files organized, batch rename layers and artboards.\",\"summary\":\"Batch rename layers\",\"releaseNotes\":\"Added param case, bug fixes.\",\"keywords\":[\"utility\",\"productivity\",\"rename\",\"layers\",\"automation\",\"batch\"],\"languages\":[\"en\"],\"website\":\"https://renameit.design\",\"helpUrl\":\"https://renameit.design/xd\",\"author\":\"Rodrigo Soares\",\"icons\":[{\"width\":24,\"height\":24,\"path\":\"images/icon_24.png\"},{\"width\":48,\"height\":48,\"path\":\"images/icon_48.png\"}],\"host\":{\"app\":\"XD\",\"minVersion\":\"13.0\"},\"uiEntryPoints\":[{\"type\":\"menu\",\"label\":\"Rename It\",\"menuItems\":[{\"type\":\"menu\",\"label\":\"Rename Selected Layers\",\"commandId\":\"renameCommand\",\"shortcut\":{\"mac\":\"Ctrl+Alt+R\",\"win\":\"Ctrl+Alt+R\"}},{\"type\":\"menu\",\"label\":\"Find & Replace Selected Layers\",\"commandId\":\"findReplaceCommand\",\"shortcut\":{\"mac\":\"Ctrl+Option+Cmd+R\",\"win\":\"Shift+Ctrl+Alt+R\"}},{\"type\":\"menu\",\"label\":\"Settings\",\"commandId\":\"settingsCommand\"},{\"type\":\"menu\",\"label\":\"Donate\",\"commandId\":\"donateCommand\"}]}]}");
 
 /***/ }),
 
@@ -32126,7 +32126,7 @@ __webpack_require__.r(__webpack_exports__);
  * @Author: Rodrigo Soares
  * @Date: 2018-08-08 22:28:53
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-09 02:08:10
+ * @Last Modified time: 2020-05-14 23:59:19
  */
 
 
@@ -32372,15 +32372,94 @@ class RenameLayers extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Componen
 
 /***/ }),
 
-/***/ "./src/lib/GoogleAnalytics.js":
-/*!************************************!*\
-  !*** ./src/lib/GoogleAnalytics.js ***!
-  \************************************/
-/*! exports provided: setAnalyticsEnabled, analyticsFirstRun, setAnalyticsFirstRun, track */
+/***/ "./src/SettingsDialog.jsx":
+/*!********************************!*\
+  !*** ./src/SettingsDialog.jsx ***!
+  \********************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/GoogleAnalytics.js */ "./src/lib/GoogleAnalytics.js");
+/*
+ * @Author: Rodrigo Soares
+ * @Date: 2018-08-11 22:14:31
+ * @Last Modified by: Rodrigo Soares
+ * @Last Modified time: 2020-05-14 23:55:18
+ */
+
+
+
+class SettingsDialog extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      analytics: true
+    };
+    this.onAnalyticsChange = this.onAnalyticsChange.bind(this);
+  }
+
+  async setAnalytics() {
+    const a = await Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__["analyticsEnabled"])();
+    this.setState({
+      analytics: a
+    });
+  }
+
+  async componentDidMount() {
+    await this.setAnalytics();
+  }
+
+  async onAnalyticsChange(event) {
+    this.setState({
+      analytics: event.target.checked
+    });
+    await Object(_lib_GoogleAnalytics_js__WEBPACK_IMPORTED_MODULE_1__["setAnalyticsEnabled"])(event.target.checked);
+  }
+
+  render() {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      method: "dialog",
+      style: {
+        width: 350
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Settings"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Rename It uses Google Analytics to help improve the plugin."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      className: "row",
+      style: {
+        alignItems: "center"
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      id: "analytics",
+      type: "checkbox",
+      checked: this.state.analytics,
+      onChange: this.onAnalyticsChange
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Enable Google Analytics")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+      className: "mt24"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      type: "submit",
+      "uxp-variant": "cta"
+    }, "Done")));
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (SettingsDialog);
+
+/***/ }),
+
+/***/ "./src/lib/GoogleAnalytics.js":
+/*!************************************!*\
+  !*** ./src/lib/GoogleAnalytics.js ***!
+  \************************************/
+/*! exports provided: analyticsEnabled, setAnalyticsEnabled, analyticsFirstRun, setAnalyticsFirstRun, track */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "analyticsEnabled", function() { return analyticsEnabled; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAnalyticsEnabled", function() { return setAnalyticsEnabled; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "analyticsFirstRun", function() { return analyticsFirstRun; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAnalyticsFirstRun", function() { return setAnalyticsFirstRun; });
@@ -32439,7 +32518,6 @@ async function getUUID() {
 async function analyticsEnabled() {
   return await xd_storage_helper__WEBPACK_IMPORTED_MODULE_1___default.a.get(kAnalyticsEnabled, true);
 }
-
 async function setAnalyticsEnabled(value) {
   await xd_storage_helper__WEBPACK_IMPORTED_MODULE_1___default.a.set(kAnalyticsEnabled, value);
 }
@@ -32515,17 +32593,7 @@ async function track(hitType, props, options) {
   }
 
   return makeRequest(url, options);
-} // https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe%20XD%2028.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename%20it&aid=com.renameit.design&av=1.1.2&dp=%2Frename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
-// https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe XD 28.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename it&aid=com.renameit.design&av=1.1.2&dp=/rename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
-// tid = UA-104184459-2
-// ds = Adobe XD 28.8.12.1
-// cid = eca19045-bd4f-3474-ae02-0cbce06ee574
-// t = pageview
-// an = Rename it
-// aid = com.renameit.design
-// av = 1.1.2
-// dp = /rename
-// z = f75aea2b-b843-3924-9025-644c84b1c6c9
+}
 
 /***/ }),
 
@@ -32582,7 +32650,7 @@ function getChildLayerName(node) {
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-13 01:50:58
+ * @Last Modified time: 2020-05-13 02:39:23
  */
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
 global.setTimeout = function (fn) {
@@ -32609,6 +32677,8 @@ const NoSelection = __webpack_require__(/*! ./NoSelection.jsx */ "./src/NoSelect
 
 const AnalyticsDialog = __webpack_require__(/*! ./AnalyticsDialog.jsx */ "./src/AnalyticsDialog.jsx").default;
 
+const SettingsDialog = __webpack_require__(/*! ./SettingsDialog.jsx */ "./src/SettingsDialog.jsx").default;
+
 const whereTo = {
   RENAME: 0,
   FIND: 1,
@@ -32618,7 +32688,11 @@ let dialog;
 
 async function showDialog(selection, to, documentRoot) {
   const firstRun = await analyticsFirstRun();
-  const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null;
+  let where = to;
+
+  if (to !== whereTo.SETTINGS && selection.items.length <= 0) {
+    where = null;
+  }
 
   if (dialog == null) {
     dialog = document.createElement("dialog");
@@ -32641,6 +32715,9 @@ async function showDialog(selection, to, documentRoot) {
         break;
 
       case whereTo.SETTINGS:
+        whereDialog = React.createElement(SettingsDialog, {
+          dialog: dialog
+        });
         break;
 
       default:
@@ -32676,6 +32753,11 @@ module.exports = {
     },
     findReplaceCommand: function (selection) {
       return showDialog(selection, whereTo.FIND).catch(err => {
+        return;
+      });
+    },
+    settingsCommand: function (selection) {
+      return showDialog(selection, whereTo.SETTINGS).catch(err => {
         return;
       });
     },

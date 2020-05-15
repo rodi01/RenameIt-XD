@@ -51,6 +51,11 @@
         },
         {
           "type": "menu",
+          "label": "Settings",
+          "commandId": "settingsCommand"
+        },
+        {
+          "type": "menu",
           "label": "Donate",
           "commandId": "donateCommand"
         }

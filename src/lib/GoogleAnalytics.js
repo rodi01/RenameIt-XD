@@ -42,7 +42,7 @@ async function getUUID() {
   return uuid
 }
 
-async function analyticsEnabled() {
+export async function analyticsEnabled() {
   return await storageHelper.get(kAnalyticsEnabled, true)
 }
 
@@ -127,16 +127,3 @@ export async function track(hitType, props, options) {
 
   return makeRequest(url, options)
 }
-
-// https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe%20XD%2028.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename%20it&aid=com.renameit.design&av=1.1.2&dp=%2Frename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
-// https://www.google-analytics.com/collect?v=1&tid=UA-104184459-2&ds=Adobe XD 28.8.12.1&cid=eca19045-bd4f-3474-ae02-0cbce06ee574&t=pageview&an=Rename it&aid=com.renameit.design&av=1.1.2&dp=/rename&z=f75aea2b-b843-3924-9025-644c84b1c6c9
-
-// tid = UA-104184459-2
-// ds = Adobe XD 28.8.12.1
-// cid = eca19045-bd4f-3474-ae02-0cbce06ee574
-// t = pageview
-// an = Rename it
-// aid = com.renameit.design
-// av = 1.1.2
-// dp = /rename
-// z = f75aea2b-b843-3924-9025-644c84b1c6c9

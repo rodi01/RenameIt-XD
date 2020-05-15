@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-13 01:50:58
+ * @Last Modified time: 2020-05-13 02:39:23
  */
 
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
@@ -19,6 +19,7 @@ const RenameLayers = require("./RenameLayers.jsx").default
 const FindReplace = require("./FindReplaceLayers.jsx").default
 const NoSelection = require("./NoSelection.jsx").default
 const AnalyticsDialog = require("./AnalyticsDialog.jsx").default
+const SettingsDialog = require("./SettingsDialog.jsx").default
 
 const whereTo = {
   RENAME: 0,
@@ -30,7 +31,10 @@ let dialog
 async function showDialog(selection, to, documentRoot) {
   const firstRun = await analyticsFirstRun()
 
-  const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null
+  let where = to
+  if (to !== whereTo.SETTINGS && selection.items.length <= 0) {
+    where = null
+  }
 
   if (dialog == null) {
     dialog = document.createElement("dialog")
@@ -47,6 +51,7 @@ async function showDialog(selection, to, documentRoot) {
         break
 
       case whereTo.SETTINGS:
+        whereDialog = <SettingsDialog dialog={dialog} />
         break
 
       default:
@@ -78,6 +83,11 @@ module.exports = {
     },
     findReplaceCommand: function (selection) {
       return showDialog(selection, whereTo.FIND).catch((err) => {
+        return
+      })
+    },
+    settingsCommand: function (selection) {
+      return showDialog(selection, whereTo.SETTINGS).catch((err) => {
         return
       })
     },
