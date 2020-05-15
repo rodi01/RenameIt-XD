@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-06 01:55:22
+ * @Last Modified time: 2020-05-13 02:39:23
  */
 
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
@@ -13,9 +13,13 @@ global.clearTimeout = function () {}
 
 const React = require("react")
 const ReactDOM = require("react-dom")
+const { shell } = require("uxp")
+const analyticsFirstRun = require("./lib/GoogleAnalytics.js").analyticsFirstRun
 const RenameLayers = require("./RenameLayers.jsx").default
 const FindReplace = require("./FindReplaceLayers.jsx").default
 const NoSelection = require("./NoSelection.jsx").default
+const AnalyticsDialog = require("./AnalyticsDialog.jsx").default
+const SettingsDialog = require("./SettingsDialog.jsx").default
 
 const whereTo = {
   RENAME: 0,
@@ -24,29 +28,41 @@ const whereTo = {
 }
 
 let dialog
-function showDialog(selection, to, documentRoot) {
-  const where = to != whereTo.SETTINGS && selection.items.length > 0 ? to : null
+async function showDialog(selection, to, documentRoot) {
+  const firstRun = await analyticsFirstRun()
+
+  let where = to
+  if (to !== whereTo.SETTINGS && selection.items.length <= 0) {
+    where = null
+  }
 
   if (dialog == null) {
     dialog = document.createElement("dialog")
+    let whereDialog
     switch (where) {
       case whereTo.RENAME:
-        ReactDOM.render(
-          <RenameLayers dialog={dialog} selection={selection} documentRoot={documentRoot} />,
-          dialog
+        whereDialog = (
+          <RenameLayers dialog={dialog} selection={selection} documentRoot={documentRoot} />
         )
         break
 
       case whereTo.FIND:
-        ReactDOM.render(<FindReplace dialog={dialog} selection={selection} />, dialog)
+        whereDialog = <FindReplace dialog={dialog} selection={selection} />
         break
 
       case whereTo.SETTINGS:
+        whereDialog = <SettingsDialog dialog={dialog} />
         break
 
       default:
-        ReactDOM.render(<NoSelection dialog={dialog} />, dialog)
+        whereDialog = <NoSelection dialog={dialog} />
         break
+    }
+
+    if (firstRun) {
+      ReactDOM.render(<AnalyticsDialog dialog={dialog} nextDialog={whereDialog} />, dialog)
+    } else {
+      ReactDOM.render(whereDialog, dialog)
     }
   }
 
@@ -69,6 +85,14 @@ module.exports = {
       return showDialog(selection, whereTo.FIND).catch((err) => {
         return
       })
+    },
+    settingsCommand: function (selection) {
+      return showDialog(selection, whereTo.SETTINGS).catch((err) => {
+        return
+      })
+    },
+    donateCommand: function () {
+      shell.openExternal("https://www.paypal.me/rodi01/5")
     },
   },
 }
