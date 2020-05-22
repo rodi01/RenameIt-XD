@@ -2,7 +2,7 @@
  * @Author: Rodrigo Soares
  * @Date: 2018-08-11 21:39:15
  * @Last Modified by: Rodrigo Soares
- * @Last Modified time: 2020-05-13 02:39:23
+ * @Last Modified time: 2020-05-22 00:25:38
  */
 
 //  temporary stubs required for React. These will not be required as soon as the XD environment provides setTimeout/clearTimeout
