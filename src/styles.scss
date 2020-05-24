@@ -15,6 +15,14 @@ hr + div {
   margin-top: 24px;
 }
 
+.mt16 {
+  margin-top: 16px;
+}
+
+.mt8 {
+  margin-top: 8px;
+}
+
 h3 {
   font-size: 11px;
   color: #707070;
@@ -125,6 +133,14 @@ h3 {
   height: 24px;
 }
 
+.aboutSection {
+  @extend .mt24;
+}
+
+.flex {
+  display: flex;
+}
+
 .error {
   color: #f44b60;
   font-size: 11px;
@@ -132,5 +148,16 @@ h3 {
 
   &.show {
     visibility: visible;
+  }
+}
+
+.credits {
+  @extend .mt24;
+  display: flex;
+  font-size: 12px;
+  line-height: 1.3em;
+  span {
+    color: #3695ef;
+    margin-left: 2px;
   }
 }
