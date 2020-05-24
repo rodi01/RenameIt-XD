@@ -29,7 +29,7 @@ const kUUIDKey = "google.analytics.uuid"
 const kAnalyticsEnabled = "analytics.enabled"
 const kAnalyticsFirstRun = "analytics.first.run"
 const UUDID_key = "218c9690-9112-11ea-bb37-0242ac130002"
-const source = `Adobe XD ${application.version}`
+const source = `adobeXD`
 const trackingId = "UA-104184459-2"
 
 async function getUUID() {

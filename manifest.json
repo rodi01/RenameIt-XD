@@ -1,7 +1,7 @@
 {
   "id": "bcd7a3a9",
   "name": "Rename it",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Keep your Adobe XD files organized, batch rename layers and artboards.",
   "summary": "Batch rename layers",
   "releaseNotes": "Added param case, bug fixes.",
