@@ -1,26 +1,3 @@
-// '{
-//   "hitParsingResult": [ {
-//     "valid": true,
-//     "parserMessage": [ ],
-//     "hit": "/debug/collect?v=1&tid=UA-104184459-2&ds=Sketch 65.1&cid=1D6660A9-A102-4ED3-976B-09AB4E043D40&t=pageview&an=Rename-It&aid=com.taptap.ninja.rename-it&av=4.5.2&dp=/rename&z=2B65B629-6B4C-4F83-952D-0587E94936DF"
-//      v1
-//      tid = UA-104184459-2
-//      sd = Sketch 65.1
-//      cid = 1D6660A9-A102-4ED3-976B-09AB4E043D40
-//      t = pageview
-//      an = Rename-It
-//      aid = com.taptap.ninja.rename-it
-//      av = 4.5.2
-//      dp = /rename
-//      z = 2B65B629-6B4C-4F83-952D-0587E94936DF
-//
-//   } ],
-//   "parserMessage": [ {
-//     "messageType": "INFO",
-//     "description": "Found 1 hit in the request."
-//   } ]
-// }
-import application from "application"
 import storageHelper from "xd-storage-helper"
 import { v3 as uuidv3 } from "uuid"
 
